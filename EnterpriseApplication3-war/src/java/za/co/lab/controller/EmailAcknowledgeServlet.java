@@ -21,8 +21,10 @@ import jakarta.servlet.http.HttpSession;
 @WebServlet("/email-acknowledge")
 public class EmailAcknowledgeServlet extends HttpServlet {
 
-    private static final Logger LOGGER
-            = Logger.getLogger(EmailAcknowledgeServlet.class.getName());
+    private static final Logger LOGGER =
+            Logger.getLogger(
+                    EmailAcknowledgeServlet.class.getName()
+            );
 
     private final AlertDAO alertDAO = new AlertDAO();
 
@@ -32,14 +34,16 @@ public class EmailAcknowledgeServlet extends HttpServlet {
             HttpServletResponse response)
             throws ServletException, IOException {
 
-        request.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        request.setCharacterEncoding(
+                StandardCharsets.UTF_8.name()
+        );
 
         int alertId;
         long expiry;
         String signature;
 
         /*
-         * Validate the submitted request parameters.
+         * Read and validate the signed-link parameters.
          */
         try {
             alertId = Integer.parseInt(
@@ -53,13 +57,18 @@ public class EmailAcknowledgeServlet extends HttpServlet {
             signature = request.getParameter("sig");
 
         } catch (NumberFormatException exception) {
+
             response.sendError(
                     HttpServletResponse.SC_BAD_REQUEST,
                     "Invalid acknowledgement request."
             );
+
             return;
         }
 
+        /*
+         * Reject missing or invalid parameter values.
+         */
         if (alertId <= 0
                 || expiry <= 0
                 || signature == null
@@ -69,11 +78,13 @@ public class EmailAcknowledgeServlet extends HttpServlet {
                     HttpServletResponse.SC_BAD_REQUEST,
                     "Invalid acknowledgement request."
             );
+
             return;
         }
 
         /*
-         * Validate the signed acknowledgement link.
+         * Verify that the acknowledgement link is authentic
+         * and has not expired.
          */
         if (!EmailLinkUtil.isValid(
                 alertId,
@@ -81,17 +92,20 @@ public class EmailAcknowledgeServlet extends HttpServlet {
                 expiry,
                 signature)) {
 
-            response.sendError(
-                    HttpServletResponse.SC_FORBIDDEN,
-                    "The acknowledgement link is invalid or expired."
+            showAccessDenied(
+                    request,
+                    response,
+                    "The acknowledgement link is invalid or has expired."
             );
+
             return;
         }
 
         /*
          * Require an existing authenticated session.
          */
-        HttpSession session = request.getSession(false);
+        HttpSession session =
+                request.getSession(false);
 
         if (session == null) {
             redirectToLogin(
@@ -100,11 +114,12 @@ public class EmailAcknowledgeServlet extends HttpServlet {
                     alertId,
                     expiry
             );
+
             return;
         }
 
-        User loggedInUser
-                = (User) session.getAttribute("loggedInUser");
+        User loggedInUser =
+                (User) session.getAttribute("loggedInUser");
 
         if (loggedInUser == null) {
             redirectToLogin(
@@ -113,13 +128,14 @@ public class EmailAcknowledgeServlet extends HttpServlet {
                     alertId,
                     expiry
             );
+
             return;
         }
 
         /*
-         * Only Pathologists may acknowledge laboratory alerts.
-         * Administrators and Laboratory Personnel may monitor alerts
-         * but may not acknowledge them.
+         * Only pathologists may acknowledge laboratory alerts.
+         * Administrators and laboratory personnel may monitor
+         * alerts but may not acknowledge them.
          */
         if (!"PATHOLOGIST".equalsIgnoreCase(
                 loggedInUser.getRole())) {
@@ -134,15 +150,19 @@ public class EmailAcknowledgeServlet extends HttpServlet {
                     + " through a signed email link."
             );
 
-            response.sendError(
-                    HttpServletResponse.SC_FORBIDDEN,
-                    "Only the assigned pathologist may acknowledge this alert."
+            showAccessDenied(
+                    request,
+                    response,
+                    "Only the assigned pathologist may acknowledge "
+                    + "this alert."
             );
+
             return;
         }
 
         /*
-         * The user account must be linked to a Pathologist profile.
+         * The authenticated user must be linked to a valid
+         * pathologist profile.
          */
         if (loggedInUser.getPathologistId() == null
                 || loggedInUser.getPathologistId() <= 0) {
@@ -152,39 +172,62 @@ public class EmailAcknowledgeServlet extends HttpServlet {
                     "ALERT_ACKNOWLEDGEMENT_REJECTED",
                     "ALERT",
                     alertId,
-                    "The Pathologist account is not linked "
-                    + "to a valid Pathologist profile."
+                    "The pathologist account is not linked "
+                    + "to a valid pathologist profile."
             );
 
-            response.sendError(
-                    HttpServletResponse.SC_FORBIDDEN,
+            showAccessDenied(
+                    request,
+                    response,
                     "The logged-in account is not linked "
                     + "to a valid pathologist profile."
             );
+
             return;
         }
 
         /*
-         * Use the ownership-aware DAO method.
+         * Ensure a usable pathologist display name is available.
+         */
+        String pathologistName =
+                loggedInUser.getFullName();
+
+        if (pathologistName == null
+                || pathologistName.isBlank()) {
+
+            pathologistName =
+                    loggedInUser.getUsername();
+        }
+
+        /*
+         * Acknowledge the alert through the ownership-aware
+         * DAO method.
          *
-         * This method should acknowledge the alert only when the
-         * patient is assigned to the logged-in Pathologist.
+         * The DAO verifies:
+         *
+         * 1. The alert exists.
+         * 2. The alert is not already acknowledged.
+         * 3. The patient is assigned to this pathologist.
+         * 4. The pathologist profile is active.
+         *
+         * The DAO must preserve notification_status.
          */
         boolean acknowledged;
 
         try {
-            acknowledged
-                    = alertDAO.acknowledgeByPathologist(
+            acknowledged =
+                    alertDAO.acknowledgeByPathologist(
                             alertId,
                             loggedInUser.getPathologistId(),
-                            loggedInUser.getFullName()
+                            pathologistName
                     );
 
         } catch (Exception exception) {
 
             LOGGER.log(
                     Level.SEVERE,
-                    "Unable to acknowledge alert ID " + alertId,
+                    "Unable to acknowledge alert ID "
+                    + alertId,
                     exception
             );
 
@@ -192,13 +235,17 @@ public class EmailAcknowledgeServlet extends HttpServlet {
                     HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
                     "The alert could not be acknowledged."
             );
+
             return;
         }
 
         /*
-         * A false result means that the alert does not exist,
-         * is already acknowledged, or is not assigned to the
-         * logged-in Pathologist.
+         * A false result means the alert:
+         *
+         * - does not exist;
+         * - is already acknowledged;
+         * - is not assigned to this pathologist; or
+         * - belongs to an inactive pathologist profile.
          */
         if (!acknowledged) {
 
@@ -207,50 +254,56 @@ public class EmailAcknowledgeServlet extends HttpServlet {
                     "ALERT_ACKNOWLEDGEMENT_REJECTED",
                     "ALERT",
                     alertId,
-                    "Alert acknowledgement was rejected because "
-                    + "the alert was already acknowledged or was not "
-                    + "assigned to the logged-in Pathologist."
+                    "The alert was already acknowledged, "
+                    + "was not assigned to the logged-in pathologist, "
+                    + "or the pathologist profile is inactive."
             );
 
-            response.sendError(
-                    HttpServletResponse.SC_FORBIDDEN,
-                    "You are not allowed to acknowledge this alert, "
-                    + "or the alert has already been acknowledged."
+            showAccessDenied(
+                    request,
+                    response,
+                    "This alert is not assigned to your pathologist "
+                    + "profile, or it has already been acknowledged."
             );
+
             return;
         }
 
         /*
-         * Record successful acknowledgement.
+         * Record the successful acknowledgement in the audit log.
          */
         AuditService.log(
                 loggedInUser,
                 "ALERT_ACKNOWLEDGED",
                 "ALERT",
                 alertId,
-                "Alert acknowledged by assigned pathologist. "
+                "Alert acknowledged by the assigned pathologist. "
                 + "pathologistId="
                 + loggedInUser.getPathologistId()
         );
 
         /*
-         * Create a new signed view token and redirect back to the
-         * secure alert-review page.
+         * Generate a signed view token and return the user to
+         * the secure alert-review page.
          */
-        String viewSignature
-                = EmailLinkUtil.sign(
+        String viewSignature =
+                EmailLinkUtil.sign(
                         alertId,
                         "view",
                         expiry
                 );
 
-        String redirectUrl
-                = request.getContextPath()
+        String redirectUrl =
+                request.getContextPath()
                 + "/email-view"
-                + "?alertId=" + alertId
-                + "&exp=" + expiry
-                + "&sig=" + encode(viewSignature)
-                + "&msg=" + encode(
+                + "?alertId="
+                + alertId
+                + "&exp="
+                + expiry
+                + "&sig="
+                + encode(viewSignature)
+                + "&msg="
+                + encode(
                         "Alert acknowledged successfully."
                 );
 
@@ -258,8 +311,17 @@ public class EmailAcknowledgeServlet extends HttpServlet {
     }
 
     /**
-     * Redirects an unauthenticated user to the login page and stores the secure
-     * review page as the post-login destination.
+     * Redirects an unauthenticated user to the login page.
+     *
+     * The signed alert-review URL is stored in the session so
+     * the application can return the user to the alert after
+     * successful authentication.
+     *
+     * @param request HTTP request
+     * @param response HTTP response
+     * @param alertId alert identifier
+     * @param expiry signed-link expiry value
+     * @throws IOException when redirecting fails
      */
     private void redirectToLogin(
             HttpServletRequest request,
@@ -268,22 +330,25 @@ public class EmailAcknowledgeServlet extends HttpServlet {
             long expiry)
             throws IOException {
 
-        String viewSignature
-                = EmailLinkUtil.sign(
+        String viewSignature =
+                EmailLinkUtil.sign(
                         alertId,
                         "view",
                         expiry
                 );
 
-        String postLoginRedirect
-                = request.getContextPath()
+        String postLoginRedirect =
+                request.getContextPath()
                 + "/email-view"
-                + "?alertId=" + alertId
-                + "&exp=" + expiry
-                + "&sig=" + encode(viewSignature);
+                + "?alertId="
+                + alertId
+                + "&exp="
+                + expiry
+                + "&sig="
+                + encode(viewSignature);
 
-        HttpSession loginSession
-                = request.getSession(true);
+        HttpSession loginSession =
+                request.getSession(true);
 
         loginSession.setAttribute(
                 "postLoginRedirect",
@@ -300,9 +365,46 @@ public class EmailAcknowledgeServlet extends HttpServlet {
     }
 
     /**
-     * URL-encodes redirect parameters using UTF-8.
+     * Displays the branded access-denied page while preserving
+     * the correct HTTP 403 response status.
+     *
+     * @param request HTTP request
+     * @param response HTTP response
+     * @param message user-friendly access-denied message
+     * @throws ServletException when forwarding fails
+     * @throws IOException when forwarding fails
+     */
+    private void showAccessDenied(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            String message)
+            throws ServletException, IOException {
+
+        request.setAttribute(
+                "errorMessage",
+                message
+        );
+
+        response.setStatus(
+                HttpServletResponse.SC_FORBIDDEN
+        );
+
+        request.getRequestDispatcher(
+                "/access-denied.jsp"
+        ).forward(
+                request,
+                response
+        );
+    }
+
+    /**
+     * URL-encodes a value using UTF-8.
+     *
+     * @param value value to encode
+     * @return encoded value
      */
     private String encode(String value) {
+
         return URLEncoder.encode(
                 value == null ? "" : value,
                 StandardCharsets.UTF_8
