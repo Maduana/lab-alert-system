@@ -1,5 +1,6 @@
 package za.co.lab.controller;
 
+import za.co.lab.dao.PathologistDAO;
 import za.co.lab.dao.PatientDAO;
 import za.co.lab.model.LabResult;
 import za.co.lab.model.Patient;
@@ -10,7 +11,9 @@ import za.co.lab.service.AuditService;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,74 +25,124 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+/**
+ * Validates, evaluates and saves submitted laboratory results.
+ *
+ * Only administrators may capture laboratory results.
+ *
+ * The servlet validates that:
+ *
+ * 1. The selected pathologist exists and is active. 2. The selected patient
+ * exists. 3. The patient is assigned to the selected pathologist. 4. The test
+ * and numerical values are valid.
+ *
+ * @author USER
+ */
 @WebServlet("/submit-result")
 public class ResultSubmitServlet extends HttpServlet {
 
-    private static final Logger LOGGER =
-            Logger.getLogger(ResultSubmitServlet.class.getName());
+    private static final Logger LOGGER
+            = Logger.getLogger(
+                    ResultSubmitServlet.class.getName()
+            );
 
-    private static final double MAX_SUPPORTED_VALUE = 1_000_000.0;
+    private static final double MAX_SUPPORTED_VALUE
+            = 1_000_000.0;
 
-    /*
+    /**
      * These values must match the options in result-form.jsp.
      */
-    private static final Set<String> SUPPORTED_TESTS = Set.of(
-            "Glucose",
-            "Potassium",
-            "Hemoglobin",
-            "WBC",
-            "Platelets"
-    );
+    private static final Set<String> SUPPORTED_TESTS
+            = Set.of(
+                    "Glucose",
+                    "Potassium",
+                    "Hemoglobin",
+                    "WBC",
+                    "Platelets"
+            );
 
-    private final AlertService alertService = new AlertService();
-    private final PatientDAO patientDAO = new PatientDAO();
+    private final AlertService alertService
+            = new AlertService();
 
+    private final PatientDAO patientDAO
+            = new PatientDAO();
+
+    private final PathologistDAO pathologistDAO
+            = new PathologistDAO();
+
+    /**
+     * Processes a submitted laboratory result.
+     *
+     * @param request HTTP request
+     * @param response HTTP response
+     * @throws ServletException when forwarding fails
+     * @throws IOException when redirecting or forwarding fails
+     */
     @Override
     protected void doPost(
             HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
 
-        request.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        request.setCharacterEncoding(
+                StandardCharsets.UTF_8.name()
+        );
+
+        configureResponse(response);
 
         /*
-         * Check the existing authenticated session without creating
-         * a new session for an unauthenticated request.
+         * Require an existing authenticated session.
          */
-        HttpSession session = request.getSession(false);
+        HttpSession session
+                = request.getSession(false);
 
         if (session == null) {
-            redirectToLogin(request, response);
+
+            redirectToLogin(
+                    request,
+                    response
+            );
+
             return;
         }
 
-        User loggedInUser =
-                (User) session.getAttribute("loggedInUser");
+        User loggedInUser
+                = (User) session.getAttribute(
+                        "loggedInUser"
+                );
 
         if (loggedInUser == null) {
-            redirectToLogin(request, response);
+
+            redirectToLogin(
+                    request,
+                    response
+            );
+
             return;
         }
 
         /*
-         * Pathologists may review and acknowledge assigned alerts,
-         * but may not capture laboratory results.
+         * Only administrators may capture laboratory results.
          */
-        if ("PATHOLOGIST".equalsIgnoreCase(loggedInUser.getRole())) {
+        String role
+                = normalizeRole(
+                        loggedInUser.getRole()
+                );
 
-            AuditService.log(
+        if (!"ADMIN".equals(role)) {
+
+            logAuditSafely(
                     loggedInUser,
                     "UNAUTHORIZED_ACCESS",
-                    "LAB_RESULT",
-                    null,
-                    "Pathologist attempted to capture a laboratory result."
+                    "Pathologist or other unauthorised user attempted "
+                    + "to capture a laboratory result."
             );
 
-            redirectToDashboard(
+            showAccessDenied(
                     request,
                     response,
-                    "error",
-                    "Pathologists may not capture laboratory results."
+                    "Only administrators may capture "
+                    + "laboratory results."
             );
 
             return;
@@ -98,30 +151,61 @@ public class ResultSubmitServlet extends HttpServlet {
         /*
          * Read and trim all submitted values.
          */
-        String patientIdText =
-                trim(request.getParameter("patientId"));
+        String pathologistIdText
+                = trim(
+                        request.getParameter(
+                                "pathologistId"
+                        )
+                );
 
-        String testName =
-                trim(request.getParameter("testName"));
+        String patientIdText
+                = trim(
+                        request.getParameter(
+                                "patientId"
+                        )
+                );
 
-        String resultValueText =
-                trim(request.getParameter("resultValue"));
+        String testName
+                = trim(
+                        request.getParameter(
+                                "testName"
+                        )
+                );
 
-        String unit =
-                trim(request.getParameter("unit"));
+        String resultValueText
+                = trim(
+                        request.getParameter(
+                                "resultValue"
+                        )
+                );
 
-        String normalMinText =
-                trim(request.getParameter("normalMin"));
+        String unit
+                = trim(
+                        request.getParameter(
+                                "unit"
+                        )
+                );
 
-        String normalMaxText =
-                trim(request.getParameter("normalMax"));
+        String normalMinText
+                = trim(
+                        request.getParameter(
+                                "normalMin"
+                        )
+                );
+
+        String normalMaxText
+                = trim(
+                        request.getParameter(
+                                "normalMax"
+                        )
+                );
 
         /*
-         * Preserve values so that the form can display them again
-         * when validation fails.
+         * Preserve submitted values before performing validation.
          */
         preserveSubmittedValues(
                 request,
+                pathologistIdText,
                 patientIdText,
                 testName,
                 resultValueText,
@@ -131,97 +215,237 @@ public class ResultSubmitServlet extends HttpServlet {
         );
 
         /*
-         * Validate required fields before parsing.
+         * Validate all required fields before parsing them.
          */
-        String requiredFieldError = validateRequiredFields(
-                patientIdText,
-                testName,
-                resultValueText,
-                unit,
-                normalMinText,
-                normalMaxText
-        );
+        String requiredFieldError
+                = validateRequiredFields(
+                        pathologistIdText,
+                        patientIdText,
+                        testName,
+                        resultValueText,
+                        unit,
+                        normalMinText,
+                        normalMaxText
+                );
 
         if (requiredFieldError != null) {
+
             returnToForm(
                     request,
                     response,
                     requiredFieldError
             );
+
             return;
         }
 
+        int pathologistId;
         int patientId;
+
         double resultValue;
         double normalMin;
         double normalMax;
 
         /*
-         * Safely parse submitted numerical values.
+         * Parse submitted identifiers and numerical values.
          */
         try {
-            patientId = Integer.parseInt(patientIdText);
-            resultValue = Double.parseDouble(resultValueText);
-            normalMin = Double.parseDouble(normalMinText);
-            normalMax = Double.parseDouble(normalMaxText);
+            pathologistId
+                    = parsePositiveInteger(
+                            pathologistIdText,
+                            "Select a valid pathologist."
+                    );
 
-        } catch (NumberFormatException exception) {
+            patientId
+                    = parsePositiveInteger(
+                            patientIdText,
+                            "Select a valid patient."
+                    );
+
+            resultValue
+                    = Double.parseDouble(
+                            resultValueText
+                    );
+
+            normalMin
+                    = Double.parseDouble(
+                            normalMinText
+                    );
+
+            normalMax
+                    = Double.parseDouble(
+                            normalMaxText
+                    );
+
+        } catch (IllegalArgumentException exception) {
 
             returnToForm(
                     request,
                     response,
-                    "Patient, result and reference-range values must be valid numbers."
+                    exception.getMessage()
             );
 
             return;
         }
 
         /*
-         * Validate the patient identifier.
+         * Confirm that the selected pathologist exists and is active.
          */
-        if (patientId <= 0) {
-            returnToForm(
-                    request,
-                    response,
-                    "Select a valid patient."
-            );
-            return;
-        }
-
-        /*
-         * Confirm that the selected patient exists.
-         *
-         * This uses findAll() because that method is already known
-         * to exist in the current PatientDAO implementation.
-         */
-        Patient selectedPatient;
+        boolean activePathologist;
 
         try {
-            selectedPatient = findPatient(patientId);
+            activePathologist
+                    = pathologistDAO.existsActive(
+                            pathologistId
+                    );
 
         } catch (Exception exception) {
 
             LOGGER.log(
                     Level.SEVERE,
-                    "Unable to validate the selected patient.",
+                    "Unable to validate pathologist ID "
+                    + pathologistId,
                     exception
             );
 
             returnToForm(
                     request,
                     response,
-                    "The selected patient could not be validated."
+                    "The selected pathologist could not be verified."
+            );
+
+            return;
+        }
+
+        if (!activePathologist) {
+
+            logAuditSafely(
+                    loggedInUser,
+                    "RESULT_SUBMISSION_REJECTED",
+                    "Invalid or inactive pathologist selected. "
+                    + "pathologistId="
+                    + pathologistId
+            );
+
+            returnToForm(
+                    request,
+                    response,
+                    "Select a valid active pathologist."
+            );
+
+            return;
+        }
+
+        /*
+         * Confirm that the patient belongs to the selected active
+         * pathologist.
+         *
+         * This check must be performed server-side even though the
+         * patient dropdown is filtered in the browser.
+         */
+        boolean validAssignment;
+
+        try {
+            validAssignment
+                    = patientDAO.isAssignedToPathologist(
+                            patientId,
+                            pathologistId
+                    );
+
+        } catch (Exception exception) {
+
+            LOGGER.log(
+                    Level.SEVERE,
+                    "Unable to validate patient/pathologist assignment. "
+                    + "patientId="
+                    + patientId
+                    + ", pathologistId="
+                    + pathologistId,
+                    exception
+            );
+
+            returnToForm(
+                    request,
+                    response,
+                    "The patient assignment could not be verified."
+            );
+
+            return;
+        }
+
+        if (!validAssignment) {
+
+            logAuditSafely(
+                    loggedInUser,
+                    "RESULT_SUBMISSION_REJECTED",
+                    "Patient/pathologist assignment mismatch. "
+                    + "patientId="
+                    + patientId
+                    + ", pathologistId="
+                    + pathologistId
+            );
+
+            returnToForm(
+                    request,
+                    response,
+                    "The selected patient is not assigned "
+                    + "to the selected pathologist."
+            );
+
+            return;
+        }
+
+        /*
+         * Retrieve the patient using the ownership-aware DAO method.
+         */
+        Patient selectedPatient;
+
+        try {
+            selectedPatient
+                    = patientDAO.findByIdAndPathologistId(
+                            patientId,
+                            pathologistId
+                    );
+
+        } catch (Exception exception) {
+
+            LOGGER.log(
+                    Level.SEVERE,
+                    "Unable to retrieve the verified patient. "
+                    + "patientId="
+                    + patientId
+                    + ", pathologistId="
+                    + pathologistId,
+                    exception
+            );
+
+            returnToForm(
+                    request,
+                    response,
+                    "The selected patient could not be verified."
             );
 
             return;
         }
 
         if (selectedPatient == null) {
+
+            logAuditSafely(
+                    loggedInUser,
+                    "RESULT_SUBMISSION_REJECTED",
+                    "The verified patient record could not be retrieved. "
+                    + "patientId="
+                    + patientId
+                    + ", pathologistId="
+                    + pathologistId
+            );
+
             returnToForm(
                     request,
                     response,
-                    "The selected patient does not exist."
+                    "The selected patient could not be verified."
             );
+
             return;
         }
 
@@ -229,17 +453,18 @@ public class ResultSubmitServlet extends HttpServlet {
          * Validate the selected laboratory test.
          */
         if (!SUPPORTED_TESTS.contains(testName)) {
+
             returnToForm(
                     request,
                     response,
                     "Select a supported laboratory test."
             );
+
             return;
         }
 
         /*
-         * Reject special floating-point values such as NaN
-         * and infinity.
+         * Reject NaN and infinite values.
          */
         if (!Double.isFinite(resultValue)
                 || !Double.isFinite(normalMin)
@@ -248,49 +473,56 @@ public class ResultSubmitServlet extends HttpServlet {
             returnToForm(
                     request,
                     response,
-                    "Result and reference-range values must be finite numbers."
+                    "Result and reference-range values "
+                    + "must be finite numbers."
             );
 
             return;
         }
 
         /*
-         * Laboratory values and reference ranges may not be negative
-         * in the current prototype.
+         * Reject negative values.
          */
         if (resultValue < 0) {
+
             returnToForm(
                     request,
                     response,
                     "Result value cannot be negative."
             );
+
             return;
         }
 
-        if (normalMin < 0 || normalMax < 0) {
+        if (normalMin < 0
+                || normalMax < 0) {
+
             returnToForm(
                     request,
                     response,
                     "Reference-range values cannot be negative."
             );
+
             return;
         }
 
         /*
-         * Validate the relationship between minimum and maximum.
+         * Validate the reference range.
          */
         if (normalMin >= normalMax) {
+
             returnToForm(
                     request,
                     response,
-                    "Normal minimum must be lower than normal maximum."
+                    "Normal minimum must be lower "
+                    + "than normal maximum."
             );
+
             return;
         }
 
         /*
-         * Apply a general upper bound to prevent unrealistic or
-         * deliberately excessive values from being processed.
+         * Apply a general upper bound.
          */
         if (resultValue > MAX_SUPPORTED_VALUE
                 || normalMin > MAX_SUPPORTED_VALUE
@@ -299,37 +531,48 @@ public class ResultSubmitServlet extends HttpServlet {
             returnToForm(
                     request,
                     response,
-                    "One or more numerical values exceed the supported limit."
+                    "One or more numerical values exceed "
+                    + "the supported limit."
             );
 
             return;
         }
 
         /*
-         * Validate the unit.
+         * Validate the measurement unit.
          */
         if (unit.isBlank()) {
+
             returnToForm(
                     request,
                     response,
                     "Enter the unit of measurement."
             );
+
             return;
         }
 
         if (unit.length() > 30) {
+
             returnToForm(
                     request,
                     response,
-                    "The unit of measurement may not exceed 30 characters."
+                    "The unit of measurement may not exceed "
+                    + "30 characters."
             );
+
             return;
         }
 
         /*
          * Build the validated laboratory-result object.
+         *
+         * Pathologist ownership is determined through the selected
+         * patient's assignment. The result does not independently
+         * override that assignment.
          */
-        LabResult result = new LabResult();
+        LabResult result
+                = new LabResult();
 
         result.setPatientId(patientId);
         result.setTestName(testName);
@@ -340,33 +583,29 @@ public class ResultSubmitServlet extends HttpServlet {
 
         try {
             /*
-             * Existing core workflow:
+             * Existing workflow coordinated by AlertService:
              *
-             * 1. Retrieve previous laboratory result.
-             * 2. Evaluate the submitted result through the Rule Engine.
-             * 3. Save the evaluated laboratory result.
+             * 1. Retrieve the previous laboratory result.
+             * 2. Evaluate the submitted result.
+             * 3. Save the evaluated result.
              * 4. Generate an alert where required.
-             * 5. Send the pathologist email where required.
+             * 5. Notify the patient's assigned pathologist.
              * 6. Update notification status.
-             *
-             * These operations are coordinated by AlertService.
              */
-            String message = alertService.processResult(result);
+            String message
+                    = alertService.processResult(result);
 
-            /*
-             * Record successful result capture.
-             */
-            AuditService.log(
+            logAuditSafely(
                     loggedInUser,
                     "RESULT_CAPTURED",
-                    "LAB_RESULT",
-                    null,
                     "Result captured for patientId="
-                    + result.getPatientId()
+                    + patientId
+                    + ", pathologistId="
+                    + pathologistId
                     + ", testName="
-                    + result.getTestName()
+                    + testName
                     + ", resultValue="
-                    + result.getResultValue()
+                    + resultValue
             );
 
             redirectToDashboard(
@@ -380,22 +619,21 @@ public class ResultSubmitServlet extends HttpServlet {
 
             LOGGER.log(
                     Level.SEVERE,
-                    "Laboratory result processing failed for patient ID "
-                    + patientId,
+                    "Laboratory result processing failed. "
+                    + "patientId="
+                    + patientId
+                    + ", pathologistId="
+                    + pathologistId,
                     exception
             );
 
-            /*
-             * Record the failed processing attempt without exposing
-             * technical details to the user.
-             */
-            AuditService.log(
+            logAuditSafely(
                     loggedInUser,
                     "RESULT_CAPTURE_FAILED",
-                    "LAB_RESULT",
-                    null,
                     "Result processing failed for patientId="
                     + patientId
+                    + ", pathologistId="
+                    + pathologistId
                     + ", testName="
                     + testName
             );
@@ -410,40 +648,48 @@ public class ResultSubmitServlet extends HttpServlet {
     }
 
     /**
-     * Finds a patient from the existing PatientDAO result.
+     * Rejects GET requests to the result-submission endpoint.
      *
-     * @param patientId patient identifier
-     * @return matching patient or null
+     * @param request HTTP request
+     * @param response HTTP response
+     * @throws ServletException servlet exception
+     * @throws IOException input/output exception
      */
-    private Patient findPatient(int patientId) {
+    @Override
+    protected void doGet(
+            HttpServletRequest request,
+            HttpServletResponse response)
+            throws ServletException, IOException {
 
-        List<Patient> patients = patientDAO.findAll();
+        response.setHeader(
+                "Allow",
+                "POST"
+        );
 
-        if (patients == null) {
-            return null;
-        }
-
-        for (Patient patient : patients) {
-            if (patient != null && patient.getId() == patientId) {
-                return patient;
-            }
-        }
-
-        return null;
+        response.sendError(
+                HttpServletResponse.SC_METHOD_NOT_ALLOWED,
+                "Laboratory results must be submitted "
+                + "from the result-capture form."
+        );
     }
 
     /**
-     * Validates that required request values were supplied.
+     * Validates required request fields.
      *
-     * @return validation message or null when valid
+     * @return validation message, or null when all required fields have values
      */
     private String validateRequiredFields(
+            String pathologistId,
             String patientId,
             String testName,
             String resultValue,
             String unit,
             String normalMin,
             String normalMax) {
+
+        if (pathologistId.isBlank()) {
+            return "Select a pathologist.";
+        }
 
         if (patientId.isBlank()) {
             return "Select a patient.";
@@ -473,10 +719,53 @@ public class ResultSubmitServlet extends HttpServlet {
     }
 
     /**
-     * Preserves submitted values following validation failure.
+     * Parses and validates a positive integer.
+     *
+     * @param value submitted value
+     * @param errorMessage validation error message
+     * @return positive integer
+     */
+    private int parsePositiveInteger(
+            String value,
+            String errorMessage) {
+
+        if (value == null
+                || value.isBlank()) {
+
+            throw new IllegalArgumentException(
+                    errorMessage
+            );
+        }
+
+        try {
+            int parsedValue
+                    = Integer.parseInt(
+                            value.trim()
+                    );
+
+            if (parsedValue <= 0) {
+
+                throw new IllegalArgumentException(
+                        errorMessage
+                );
+            }
+
+            return parsedValue;
+
+        } catch (NumberFormatException exception) {
+
+            throw new IllegalArgumentException(
+                    errorMessage
+            );
+        }
+    }
+
+    /**
+     * Preserves submitted values following a validation failure.
      */
     private void preserveSubmittedValues(
             HttpServletRequest request,
+            String pathologistId,
             String patientId,
             String testName,
             String resultValue,
@@ -484,17 +773,45 @@ public class ResultSubmitServlet extends HttpServlet {
             String normalMin,
             String normalMax) {
 
-        request.setAttribute("formPatientId", patientId);
-        request.setAttribute("formTestName", testName);
-        request.setAttribute("formResultValue", resultValue);
-        request.setAttribute("formUnit", unit);
-        request.setAttribute("formNormalMin", normalMin);
-        request.setAttribute("formNormalMax", normalMax);
+        request.setAttribute(
+                "formPathologistId",
+                pathologistId
+        );
+
+        request.setAttribute(
+                "formPatientId",
+                patientId
+        );
+
+        request.setAttribute(
+                "formTestName",
+                testName
+        );
+
+        request.setAttribute(
+                "formResultValue",
+                resultValue
+        );
+
+        request.setAttribute(
+                "formUnit",
+                unit
+        );
+
+        request.setAttribute(
+                "formNormalMin",
+                normalMin
+        );
+
+        request.setAttribute(
+                "formNormalMax",
+                normalMax
+        );
     }
 
     /**
-     * Forwards the user back to the form with a validation message
-     * and a refreshed patient list.
+     * Returns the user to the result form while preserving submitted values and
+     * reloading active pathologists.
      */
     private void returnToForm(
             HttpServletRequest request,
@@ -502,33 +819,146 @@ public class ResultSubmitServlet extends HttpServlet {
             String errorMessage)
             throws ServletException, IOException {
 
-        request.setAttribute("error", errorMessage);
+        request.setAttribute(
+                "error",
+                errorMessage
+        );
+
+        /*
+         * Preserve values if this method is called before the normal
+         * preservation block has run.
+         */
+        setAttributeIfMissing(
+                request,
+                "formPathologistId",
+                request.getParameter("pathologistId")
+        );
+
+        setAttributeIfMissing(
+                request,
+                "formPatientId",
+                request.getParameter("patientId")
+        );
+
+        setAttributeIfMissing(
+                request,
+                "formTestName",
+                request.getParameter("testName")
+        );
+
+        setAttributeIfMissing(
+                request,
+                "formResultValue",
+                request.getParameter("resultValue")
+        );
+
+        setAttributeIfMissing(
+                request,
+                "formUnit",
+                request.getParameter("unit")
+        );
+
+        setAttributeIfMissing(
+                request,
+                "formNormalMin",
+                request.getParameter("normalMin")
+        );
+
+        setAttributeIfMissing(
+                request,
+                "formNormalMax",
+                request.getParameter("normalMax")
+        );
 
         try {
+            List<?> pathologists
+                    = pathologistDAO.findAllActive();
+
             request.setAttribute(
-                    "patients",
-                    patientDAO.findAll()
+                    "pathologists",
+                    pathologists == null
+                            ? Collections.emptyList()
+                            : pathologists
             );
 
         } catch (Exception exception) {
+
             LOGGER.log(
                     Level.SEVERE,
-                    "Unable to reload patients after validation failure.",
+                    "Unable to reload active pathologists "
+                    + "after result validation failure.",
                     exception
             );
 
             request.setAttribute(
-                    "patients",
-                    List.of()
+                    "pathologists",
+                    Collections.emptyList()
             );
         }
 
-        request.getRequestDispatcher("/result-form.jsp")
-                .forward(request, response);
+        /*
+         * Patients remain dynamically loaded according to the
+         * preserved pathologist selection.
+         */
+        request.setAttribute(
+                "patients",
+                Collections.emptyList()
+        );
+
+        request.getRequestDispatcher(
+                "/result-form.jsp"
+        ).forward(
+                request,
+                response
+        );
     }
 
     /**
-     * Redirects an unauthenticated user to the login page.
+     * Sets an attribute only when the attribute is not already present.
+     */
+    private void setAttributeIfMissing(
+            HttpServletRequest request,
+            String attributeName,
+            String value) {
+
+        if (request.getAttribute(attributeName) != null) {
+            return;
+        }
+
+        request.setAttribute(
+                attributeName,
+                trim(value)
+        );
+    }
+
+    /**
+     * Displays the branded HTTP 403 page.
+     */
+    private void showAccessDenied(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            String message)
+            throws ServletException, IOException {
+
+        request.setAttribute(
+                "errorMessage",
+                message
+        );
+
+        response.setStatus(
+                HttpServletResponse.SC_FORBIDDEN
+        );
+
+        request.getRequestDispatcher(
+                "/access-denied.jsp"
+        ).forward(
+                request,
+                response
+        );
+    }
+
+    /**
+     * Redirects an unauthenticated user to login.
      */
     private void redirectToLogin(
             HttpServletRequest request,
@@ -538,7 +968,9 @@ public class ResultSubmitServlet extends HttpServlet {
         response.sendRedirect(
                 request.getContextPath()
                 + "/index.jsp?error="
-                + encode("Please login first.")
+                + encode(
+                        "Please login first."
+                )
         );
     }
 
@@ -562,18 +994,95 @@ public class ResultSubmitServlet extends HttpServlet {
     }
 
     /**
+     * Records an audit event without allowing an audit failure to interrupt the
+     * result-capture workflow.
+     */
+    private void logAuditSafely(
+            User user,
+            String action,
+            String details) {
+
+        try {
+            AuditService.log(
+                    user,
+                    action,
+                    "LAB_RESULT",
+                    null,
+                    details
+            );
+
+        } catch (Exception exception) {
+
+            LOGGER.log(
+                    Level.WARNING,
+                    "Unable to record the result-capture audit event.",
+                    exception
+            );
+        }
+    }
+
+    /**
+     * Applies secure response headers.
+     */
+    private void configureResponse(
+            HttpServletResponse response) {
+
+        response.setCharacterEncoding(
+                StandardCharsets.UTF_8.name()
+        );
+
+        response.setHeader(
+                "Cache-Control",
+                "no-store, no-cache, must-revalidate, "
+                + "max-age=0, private"
+        );
+
+        response.setHeader(
+                "Pragma",
+                "no-cache"
+        );
+
+        response.setDateHeader(
+                "Expires",
+                0L
+        );
+
+        response.setHeader(
+                "X-Content-Type-Options",
+                "nosniff"
+        );
+    }
+
+    /**
+     * Normalises a user role.
+     */
+    private String normalizeRole(String role) {
+
+        return role == null
+                ? ""
+                : role.trim()
+                        .toUpperCase(Locale.ROOT);
+    }
+
+    /**
      * Trims a request value and converts null to an empty string.
      */
     private String trim(String value) {
-        return value == null ? "" : value.trim();
+
+        return value == null
+                ? ""
+                : value.trim();
     }
 
     /**
      * URL-encodes redirect messages using UTF-8.
      */
     private String encode(String value) {
+
         return URLEncoder.encode(
-                value == null ? "" : value,
+                value == null
+                        ? ""
+                        : value,
                 StandardCharsets.UTF_8
         );
     }

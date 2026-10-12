@@ -1,12 +1,14 @@
 package za.co.lab.dao;
 
 import za.co.lab.model.Alert;
+import za.co.lab.model.AlertReportFilter;
 import za.co.lab.util.DBUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -14,8 +16,8 @@ import java.util.logging.Logger;
 
 public class AlertDAO {
 
-    private static final Logger LOGGER
-            = Logger.getLogger(AlertDAO.class.getName());
+    private static final Logger LOGGER =
+            Logger.getLogger(AlertDAO.class.getName());
 
     /**
      * Creates a new alert.
@@ -25,16 +27,17 @@ public class AlertDAO {
      */
     public int insert(Alert alert) {
 
-        String sql
-                = "INSERT INTO alerts "
+        String sql =
+                "INSERT INTO alerts "
                 + "(result_id, patient_id, severity, alert_message, "
                 + "notification_status, acknowledged) "
                 + "VALUES (?, ?, ?, ?, ?, ?)";
 
-        try (Connection connection = DBUtil.getConnection(); PreparedStatement statement
-                = connection.prepareStatement(
-                        sql,
-                        Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement statement =
+                     connection.prepareStatement(
+                             sql,
+                             Statement.RETURN_GENERATED_KEYS)) {
 
             statement.setInt(1, alert.getResultId());
             statement.setInt(2, alert.getPatientId());
@@ -49,8 +52,8 @@ public class AlertDAO {
                 return -1;
             }
 
-            try (ResultSet generatedKeys
-                    = statement.getGeneratedKeys()) {
+            try (ResultSet generatedKeys =
+                         statement.getGeneratedKeys()) {
 
                 if (generatedKeys.next()) {
                     return generatedKeys.getInt(1);
@@ -69,9 +72,12 @@ public class AlertDAO {
     }
 
     /**
-     * Updates only the email-notification status.
+     * Updates only the email notification status.
      *
-     * Typical values: EMAIL_SENT EMAIL_FAILED PENDING
+     * Typical values:
+     * EMAIL_SENT
+     * EMAIL_FAILED
+     * PENDING
      *
      * This method must not be used for acknowledgement status.
      *
@@ -90,13 +96,14 @@ public class AlertDAO {
             return false;
         }
 
-        String sql
-                = "UPDATE alerts "
+        String sql =
+                "UPDATE alerts "
                 + "SET notification_status = ? "
                 + "WHERE id = ?";
 
-        try (Connection connection = DBUtil.getConnection(); PreparedStatement statement
-                = connection.prepareStatement(sql)) {
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement statement =
+                     connection.prepareStatement(sql)) {
 
             statement.setString(1, status.trim());
             statement.setInt(2, alertId);
@@ -118,23 +125,24 @@ public class AlertDAO {
     /**
      * Checks whether an alert already exists for a result.
      *
-     * @param resultId laboratory-result identifier
+     * @param resultId laboratory result identifier
      * @return true when an alert exists
      */
     public boolean existsByResultId(int resultId) {
 
-        String sql
-                = "SELECT COUNT(*) "
+        String sql =
+                "SELECT COUNT(*) "
                 + "FROM alerts "
                 + "WHERE result_id = ?";
 
-        try (Connection connection = DBUtil.getConnection(); PreparedStatement statement
-                = connection.prepareStatement(sql)) {
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement statement =
+                     connection.prepareStatement(sql)) {
 
             statement.setInt(1, resultId);
 
-            try (ResultSet resultSet
-                    = statement.executeQuery()) {
+            try (ResultSet resultSet =
+                         statement.executeQuery()) {
 
                 if (resultSet.next()) {
                     return resultSet.getInt(1) > 0;
@@ -161,8 +169,8 @@ public class AlertDAO {
      */
     public Alert findById(int alertId) {
 
-        String sql
-                = "SELECT a.*, "
+        String sql =
+                "SELECT a.*, "
                 + "p.patient_code, "
                 + "CONCAT(p.first_name, ' ', p.last_name) "
                 + "AS patient_name, "
@@ -175,13 +183,14 @@ public class AlertDAO {
                 + "ON a.result_id = lr.id "
                 + "WHERE a.id = ?";
 
-        try (Connection connection = DBUtil.getConnection(); PreparedStatement statement
-                = connection.prepareStatement(sql)) {
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement statement =
+                     connection.prepareStatement(sql)) {
 
             statement.setInt(1, alertId);
 
-            try (ResultSet resultSet
-                    = statement.executeQuery()) {
+            try (ResultSet resultSet =
+                         statement.executeQuery()) {
 
                 if (resultSet.next()) {
                     return mapAlert(resultSet);
@@ -208,8 +217,8 @@ public class AlertDAO {
 
         List<Alert> alerts = new ArrayList<>();
 
-        String sql
-                = "SELECT a.*, "
+        String sql =
+                "SELECT a.*, "
                 + "p.patient_code, "
                 + "CONCAT(p.first_name, ' ', p.last_name) "
                 + "AS patient_name, "
@@ -220,11 +229,13 @@ public class AlertDAO {
                 + "ON a.patient_id = p.id "
                 + "JOIN lab_results lr "
                 + "ON a.result_id = lr.id "
-                + "ORDER BY a.created_at DESC";
+                + "ORDER BY a.created_at DESC, a.id DESC";
 
-        try (Connection connection = DBUtil.getConnection(); PreparedStatement statement
-                = connection.prepareStatement(sql); ResultSet resultSet
-                = statement.executeQuery()) {
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement statement =
+                     connection.prepareStatement(sql);
+             ResultSet resultSet =
+                     statement.executeQuery()) {
 
             while (resultSet.next()) {
                 alerts.add(mapAlert(resultSet));
@@ -242,18 +253,22 @@ public class AlertDAO {
     }
 
     /**
-     * Returns alerts for patients assigned to a particular pathologist.
+     * Returns alerts for patients assigned to a pathologist.
      *
      * @param pathologistId pathologist identifier
-     * @return assigned-alert list
+     * @return assigned alert list
      */
     public List<Alert> findAllByPathologistId(
             int pathologistId) {
 
         List<Alert> alerts = new ArrayList<>();
 
-        String sql
-                = "SELECT a.*, "
+        if (pathologistId <= 0) {
+            return alerts;
+        }
+
+        String sql =
+                "SELECT a.*, "
                 + "p.patient_code, "
                 + "CONCAT(p.first_name, ' ', p.last_name) "
                 + "AS patient_name, "
@@ -265,15 +280,16 @@ public class AlertDAO {
                 + "JOIN lab_results lr "
                 + "ON a.result_id = lr.id "
                 + "WHERE p.pathologist_id = ? "
-                + "ORDER BY a.created_at DESC";
+                + "ORDER BY a.created_at DESC, a.id DESC";
 
-        try (Connection connection = DBUtil.getConnection(); PreparedStatement statement
-                = connection.prepareStatement(sql)) {
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement statement =
+                     connection.prepareStatement(sql)) {
 
             statement.setInt(1, pathologistId);
 
-            try (ResultSet resultSet
-                    = statement.executeQuery()) {
+            try (ResultSet resultSet =
+                         statement.executeQuery()) {
 
                 while (resultSet.next()) {
                     alerts.add(mapAlert(resultSet));
@@ -293,21 +309,306 @@ public class AlertDAO {
     }
 
     /**
+     * Returns alerts matching the supplied report filters.
+     *
+     * This method is intended for administrators because it does
+     * not limit results to a particular pathologist.
+     *
+     * @param filter report filters
+     * @return filtered alert list
+     */
+    public List<Alert> findForReport(
+            AlertReportFilter filter) {
+
+        return findForReportInternal(
+                filter,
+                null
+        );
+    }
+
+    /**
+     * Returns alerts matching the report filters, limited to patients
+     * assigned to the authenticated pathologist.
+     *
+     * @param filter report filters
+     * @param pathologistId authenticated pathologist identifier
+     * @return filtered assigned alert list
+     */
+    public List<Alert> findForReportByPathologistId(
+            AlertReportFilter filter,
+            int pathologistId) {
+
+        if (pathologistId <= 0) {
+            return new ArrayList<>();
+        }
+
+        return findForReportInternal(
+                filter,
+                pathologistId
+        );
+    }
+
+    /**
+     * Executes the shared role-aware reporting query.
+     *
+     * When pathologistId is null, all matching alerts are returned.
+     * When pathologistId is supplied, only alerts assigned to that
+     * pathologist are returned.
+     *
+     * @param filter report filters
+     * @param pathologistId optional pathologist identifier
+     * @return filtered alert list
+     */
+    private List<Alert> findForReportInternal(
+            AlertReportFilter filter,
+            Integer pathologistId) {
+
+        List<Alert> alerts = new ArrayList<>();
+
+        AlertReportFilter safeFilter =
+                filter == null
+                        ? new AlertReportFilter()
+                        : filter;
+
+        if (safeFilter.hasInvalidDateRange()) {
+            LOGGER.log(
+                    Level.WARNING,
+                    "Report query rejected because the start date "
+                    + "is later than the end date."
+            );
+
+            return alerts;
+        }
+
+        StringBuilder sql = new StringBuilder();
+
+        sql.append(
+                "SELECT a.*, "
+                + "p.patient_code, "
+                + "CONCAT(p.first_name, ' ', p.last_name) "
+                + "AS patient_name, "
+                + "lr.test_name, "
+                + "lr.result_value "
+                + "FROM alerts a "
+                + "JOIN patients p "
+                + "ON p.id = a.patient_id "
+                + "JOIN lab_results lr "
+                + "ON lr.id = a.result_id "
+                + "WHERE 1 = 1 "
+        );
+
+        List<Object> parameters = new ArrayList<>();
+
+        /*
+         * The pathologist ID must come from the authenticated User
+         * object in the servlet, never from a request parameter.
+         */
+        if (pathologistId != null) {
+            sql.append(
+                    "AND p.pathologist_id = ? "
+            );
+
+            parameters.add(pathologistId);
+        }
+
+        /*
+         * Start date is inclusive from 00:00:00.
+         */
+        if (safeFilter.hasStartDate()) {
+            sql.append(
+                    "AND a.created_at >= ? "
+            );
+
+            parameters.add(
+                    Timestamp.valueOf(
+                            safeFilter.getStartDate()
+                                    .atStartOfDay()
+                    )
+            );
+        }
+
+        /*
+         * End date is inclusive.
+         *
+         * The query compares created_at with the start of the day
+         * after the selected end date.
+         */
+        if (safeFilter.hasEndDate()) {
+            sql.append(
+                    "AND a.created_at < ? "
+            );
+
+            parameters.add(
+                    Timestamp.valueOf(
+                            safeFilter.getEndDate()
+                                    .plusDays(1)
+                                    .atStartOfDay()
+                    )
+            );
+        }
+
+        if (safeFilter.hasSeverity()) {
+            sql.append(
+                    "AND UPPER(a.severity) = UPPER(?) "
+            );
+
+            parameters.add(
+                    safeFilter.getSeverity()
+            );
+        }
+
+        if (safeFilter.hasNotificationStatus()) {
+            sql.append(
+                    "AND UPPER(a.notification_status) = UPPER(?) "
+            );
+
+            parameters.add(
+                    safeFilter.getNotificationStatus()
+            );
+        }
+
+        /*
+         * ACKNOWLEDGED means acknowledged = TRUE.
+         * PENDING means acknowledged = FALSE.
+         */
+        if (safeFilter.isAcknowledgedOnly()) {
+            sql.append(
+                    "AND a.acknowledged = TRUE "
+            );
+
+        } else if (safeFilter.isPendingOnly()) {
+            sql.append(
+                    "AND a.acknowledged = FALSE "
+            );
+        }
+
+        /*
+         * Patient code supports a case-insensitive partial match.
+         */
+        if (safeFilter.hasPatientCode()) {
+            sql.append(
+                    "AND UPPER(p.patient_code) LIKE UPPER(?) "
+            );
+
+            parameters.add(
+                    "%"
+                    + safeFilter.getPatientCode()
+                    + "%"
+            );
+        }
+
+        /*
+         * Test name uses a case-insensitive exact match.
+         */
+        if (safeFilter.hasTestName()) {
+            sql.append(
+                    "AND UPPER(lr.test_name) = UPPER(?) "
+            );
+
+            parameters.add(
+                    safeFilter.getTestName()
+            );
+        }
+
+        sql.append(
+                "ORDER BY a.created_at DESC, a.id DESC"
+        );
+
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement statement =
+                     connection.prepareStatement(
+                             sql.toString()
+                     )) {
+
+            bindReportParameters(
+                    statement,
+                    parameters
+            );
+
+            try (ResultSet resultSet =
+                         statement.executeQuery()) {
+
+                while (resultSet.next()) {
+                    alerts.add(mapAlert(resultSet));
+                }
+            }
+
+        } catch (Exception exception) {
+            LOGGER.log(
+                    Level.SEVERE,
+                    "Unable to retrieve filtered alert report records.",
+                    exception
+            );
+        }
+
+        return alerts;
+    }
+
+    /**
+     * Binds the dynamically collected report parameters to the
+     * prepared statement.
+     *
+     * @param statement prepared statement
+     * @param parameters filter parameters
+     * @throws Exception when parameter binding fails
+     */
+    private void bindReportParameters(
+            PreparedStatement statement,
+            List<Object> parameters)
+            throws Exception {
+
+        for (int index = 0;
+                index < parameters.size();
+                index++) {
+
+            Object parameter =
+                    parameters.get(index);
+
+            int position =
+                    index + 1;
+
+            if (parameter instanceof Integer) {
+
+                statement.setInt(
+                        position,
+                        (Integer) parameter
+                );
+
+            } else if (parameter instanceof Timestamp) {
+
+                statement.setTimestamp(
+                        position,
+                        (Timestamp) parameter
+                );
+
+            } else {
+
+                statement.setString(
+                        position,
+                        String.valueOf(parameter)
+                );
+            }
+        }
+    }
+
+    /**
      * Counts all unacknowledged critical alerts.
      *
-     * @return pending critical-alert count
+     * @return pending critical alert count
      */
     public int countPendingCritical() {
 
-        String sql
-                = "SELECT COUNT(*) AS total "
+        String sql =
+                "SELECT COUNT(*) AS total "
                 + "FROM alerts "
                 + "WHERE severity = 'CRITICAL' "
                 + "AND acknowledged = FALSE";
 
-        try (Connection connection = DBUtil.getConnection(); PreparedStatement statement
-                = connection.prepareStatement(sql); ResultSet resultSet
-                = statement.executeQuery()) {
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement statement =
+                     connection.prepareStatement(sql);
+             ResultSet resultSet =
+                     statement.executeQuery()) {
 
             if (resultSet.next()) {
                 return resultSet.getInt("total");
@@ -325,17 +626,20 @@ public class AlertDAO {
     }
 
     /**
-     * Counts pending critical alerts belonging to patients assigned to a
-     * particular pathologist.
+     * Counts pending critical alerts for a pathologist.
      *
      * @param pathologistId pathologist identifier
-     * @return pending critical-alert count
+     * @return pending critical alert count
      */
     public int countPendingCriticalByPathologistId(
             int pathologistId) {
 
-        String sql
-                = "SELECT COUNT(*) AS total "
+        if (pathologistId <= 0) {
+            return 0;
+        }
+
+        String sql =
+                "SELECT COUNT(*) AS total "
                 + "FROM alerts a "
                 + "JOIN patients p "
                 + "ON a.patient_id = p.id "
@@ -343,13 +647,14 @@ public class AlertDAO {
                 + "AND a.severity = 'CRITICAL' "
                 + "AND a.acknowledged = FALSE";
 
-        try (Connection connection = DBUtil.getConnection(); PreparedStatement statement
-                = connection.prepareStatement(sql)) {
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement statement =
+                     connection.prepareStatement(sql)) {
 
             statement.setInt(1, pathologistId);
 
-            try (ResultSet resultSet
-                    = statement.executeQuery()) {
+            try (ResultSet resultSet =
+                         statement.executeQuery()) {
 
                 if (resultSet.next()) {
                     return resultSet.getInt("total");
@@ -373,29 +678,41 @@ public class AlertDAO {
      *
      * This method preserves notification_status.
      *
-     * Prefer acknowledgeByPathologist() for user-triggered acknowledgement
-     * because that method verifies ownership.
+     * Prefer acknowledgeByPathologist() for acknowledgements
+     * initiated by a pathologist.
      *
      * @param alertId alert identifier
-     * @param acknowledgedBy acknowledging user name
-     * @return true when one unacknowledged row was updated
+     * @param acknowledgedBy acknowledging user
+     * @return true when acknowledgement succeeds
      */
     public boolean acknowledge(
             int alertId,
             String acknowledgedBy) {
 
-        String sql
-                = "UPDATE alerts "
+        if (alertId <= 0
+                || acknowledgedBy == null
+                || acknowledgedBy.isBlank()) {
+
+            return false;
+        }
+
+        String sql =
+                "UPDATE alerts "
                 + "SET acknowledged = TRUE, "
                 + "acknowledged_by = ?, "
                 + "acknowledged_at = CURRENT_TIMESTAMP "
                 + "WHERE id = ? "
                 + "AND acknowledged = FALSE";
 
-        try (Connection connection = DBUtil.getConnection(); PreparedStatement statement
-                = connection.prepareStatement(sql)) {
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement statement =
+                     connection.prepareStatement(sql)) {
 
-            statement.setString(1, acknowledgedBy);
+            statement.setString(
+                    1,
+                    acknowledgedBy.trim()
+            );
+
             statement.setInt(2, alertId);
 
             return statement.executeUpdate() == 1;
@@ -414,12 +731,12 @@ public class AlertDAO {
     /**
      * Acknowledges an alert only when:
      *
-     * 1. The alert exists. 2. The alert has not already been acknowledged. 3.
-     * The patient is assigned to the supplied pathologist. 4. The supplied
-     * pathologist profile is active.
+     * 1. The alert exists.
+     * 2. The alert has not already been acknowledged.
+     * 3. The patient is assigned to the supplied pathologist.
+     * 4. The pathologist profile is active.
      *
-     * The method deliberately leaves notification_status unchanged. EMAIL_SENT
-     * therefore remains EMAIL_SENT after acknowledgement.
+     * The notification status remains unchanged.
      *
      * @param alertId alert identifier
      * @param pathologistId pathologist identifier
@@ -431,8 +748,16 @@ public class AlertDAO {
             int pathologistId,
             String pathologistName) {
 
-        String sql
-                = "UPDATE alerts a "
+        if (alertId <= 0
+                || pathologistId <= 0
+                || pathologistName == null
+                || pathologistName.isBlank()) {
+
+            return false;
+        }
+
+        String sql =
+                "UPDATE alerts a "
                 + "JOIN patients p "
                 + "ON a.patient_id = p.id "
                 + "JOIN pathologists ph "
@@ -446,11 +771,17 @@ public class AlertDAO {
                 + "AND p.pathologist_id = ? "
                 + "AND ph.active = TRUE";
 
-        try (Connection connection = DBUtil.getConnection(); PreparedStatement statement
-                = connection.prepareStatement(sql)) {
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement statement =
+                     connection.prepareStatement(sql)) {
 
             statement.setInt(1, pathologistId);
-            statement.setString(2, pathologistName);
+
+            statement.setString(
+                    2,
+                    pathologistName.trim()
+            );
+
             statement.setInt(3, alertId);
             statement.setInt(4, pathologistId);
 
@@ -471,8 +802,8 @@ public class AlertDAO {
     }
 
     /**
-     * Checks whether an alert belongs to a patient assigned to the supplied
-     * active pathologist.
+     * Checks whether an alert belongs to a patient assigned to the
+     * supplied active pathologist.
      *
      * @param alertId alert identifier
      * @param pathologistId pathologist identifier
@@ -482,8 +813,12 @@ public class AlertDAO {
             int alertId,
             int pathologistId) {
 
-        String sql
-                = "SELECT COUNT(*) "
+        if (alertId <= 0 || pathologistId <= 0) {
+            return false;
+        }
+
+        String sql =
+                "SELECT COUNT(*) "
                 + "FROM alerts a "
                 + "JOIN patients p "
                 + "ON a.patient_id = p.id "
@@ -493,14 +828,15 @@ public class AlertDAO {
                 + "AND p.pathologist_id = ? "
                 + "AND ph.active = TRUE";
 
-        try (Connection connection = DBUtil.getConnection(); PreparedStatement statement
-                = connection.prepareStatement(sql)) {
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement statement =
+                     connection.prepareStatement(sql)) {
 
             statement.setInt(1, alertId);
             statement.setInt(2, pathologistId);
 
-            try (ResultSet resultSet
-                    = statement.executeQuery()) {
+            try (ResultSet resultSet =
+                         statement.executeQuery()) {
 
                 if (resultSet.next()) {
                     return resultSet.getInt(1) > 0;
@@ -522,46 +858,69 @@ public class AlertDAO {
     }
 
     /**
-     * Maps an alert query row to an Alert object.
+     * Maps one joined query row to an Alert object.
      *
-     * The query must include patient_code, patient_name, test_name and
-     * result_value.
+     * The query must include:
+     * patient_code
+     * patient_name
+     * test_name
+     * result_value
+     *
+     * @param resultSet current query row
+     * @return populated alert
+     * @throws Exception when a column cannot be read
      */
     private Alert mapAlert(ResultSet resultSet)
             throws Exception {
 
         Alert alert = new Alert();
 
-        alert.setId(resultSet.getInt("id"));
-        alert.setResultId(resultSet.getInt("result_id"));
-        alert.setPatientId(resultSet.getInt("patient_id"));
+        alert.setId(
+                resultSet.getInt("id")
+        );
+
+        alert.setResultId(
+                resultSet.getInt("result_id")
+        );
+
+        alert.setPatientId(
+                resultSet.getInt("patient_id")
+        );
+
         alert.setPatientCode(
                 resultSet.getString("patient_code")
         );
+
         alert.setPatientName(
                 resultSet.getString("patient_name")
         );
+
         alert.setTestName(
                 resultSet.getString("test_name")
         );
+
         alert.setResultValue(
                 resultSet.getDouble("result_value")
         );
+
         alert.setSeverity(
                 resultSet.getString("severity")
         );
+
         alert.setAlertMessage(
                 resultSet.getString("alert_message")
         );
+
         alert.setNotificationStatus(
                 resultSet.getString("notification_status")
         );
+
         alert.setAcknowledged(
                 resultSet.getBoolean("acknowledged")
         );
 
-        int acknowledgedPathologistId
-                = resultSet.getInt(
+        int acknowledgedPathologistId =
+                resultSet.getInt(
                         "acknowledged_by_pathologist_id"
                 );
 
@@ -574,9 +933,11 @@ public class AlertDAO {
         alert.setAcknowledgedBy(
                 resultSet.getString("acknowledged_by")
         );
+
         alert.setAcknowledgedAt(
                 resultSet.getTimestamp("acknowledged_at")
         );
+
         alert.setCreatedAt(
                 resultSet.getTimestamp("created_at")
         );
