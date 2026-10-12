@@ -9,20 +9,32 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+/**
+ * Provides database connections for the deployed application and
+ * for automated tests.
+ *
+ * The deployed application uses the GlassFish JNDI datasource.
+ * Automated tests use direct JDBC when test mode is enabled.
+ *
+ * @author USER
+ */
 public final class DBUtil {
 
-    /*
+    /**
      * GlassFish JDBC resource used by the deployed application.
      */
     private static final String JNDI_NAME =
             "jdbc/lab_alert_db";
 
-    /*
-     * System properties used only when test mode is enabled.
+    /**
+     * System property that enables direct JDBC test mode.
      */
     private static final String TEST_MODE_PROPERTY =
             "labalert.testMode";
 
+    /**
+     * Test-database configuration system properties.
+     */
     private static final String TEST_DB_URL_PROPERTY =
             "labalert.testDbUrl";
 
@@ -32,11 +44,11 @@ public final class DBUtil {
     private static final String TEST_DB_PASSWORD_PROPERTY =
             "labalert.testDbPassword";
 
-    /*
+    /**
      * Safe development defaults.
      *
-     * The password has no default and must be supplied through
-     * a system property or environment variable.
+     * The password has no default and must be supplied through a
+     * system property or environment variable.
      */
     private static final String DEFAULT_TEST_DB_URL =
             "jdbc:mysql://localhost:3306/lab_alert_db"
@@ -47,18 +59,18 @@ public final class DBUtil {
     private static final String DEFAULT_TEST_DB_USER =
             "root";
 
+    /**
+     * Prevents utility-class construction.
+     */
     private DBUtil() {
-        /*
-         * Utility class. Prevent object creation.
-         */
     }
 
     /**
      * Returns a database connection.
      *
      * The deployed application uses the GlassFish JNDI datasource.
-     * JUnit tests running outside GlassFish use a direct JDBC
-     * connection when labalert.testMode is true.
+     * JUnit tests running outside GlassFish use direct JDBC when
+     * labalert.testMode is true.
      *
      * @return database connection
      * @throws SQLException when a connection cannot be obtained
@@ -80,7 +92,7 @@ public final class DBUtil {
      *
      * -Dlabalert.testMode=true
      *
-     * or the environment variable:
+     * or:
      *
      * LABALERT_TEST_MODE=true
      *
@@ -89,16 +101,22 @@ public final class DBUtil {
     private static boolean isTestMode() {
 
         String configuredValue =
-                System.getProperty(TEST_MODE_PROPERTY);
+                System.getProperty(
+                        TEST_MODE_PROPERTY
+                );
 
         if (configuredValue == null
                 || configuredValue.isBlank()) {
 
             configuredValue =
-                    System.getenv("LABALERT_TEST_MODE");
+                    System.getenv(
+                            "LABALERT_TEST_MODE"
+                    );
         }
 
-        return Boolean.parseBoolean(configuredValue);
+        return Boolean.parseBoolean(
+                configuredValue
+        );
     }
 
     /**
@@ -116,9 +134,12 @@ public final class DBUtil {
                     new InitialContext();
 
             Object resource =
-                    context.lookup(JNDI_NAME);
+                    context.lookup(
+                            JNDI_NAME
+                    );
 
             if (!(resource instanceof DataSource)) {
+
                 throw new SQLException(
                         "The JNDI resource "
                         + JNDI_NAME
@@ -144,10 +165,10 @@ public final class DBUtil {
     }
 
     /**
-     * Creates a direct JDBC connection for JUnit tests.
+     * Creates a direct JDBC connection for automated tests.
      *
-     * The test runner executes outside GlassFish and therefore
-     * cannot access the application server's JNDI datasource.
+     * The test runner executes outside GlassFish and cannot access
+     * the application server's JNDI datasource.
      *
      * @return direct JDBC connection
      * @throws SQLException when the test database cannot be reached
@@ -177,12 +198,14 @@ public final class DBUtil {
                 );
 
         if (databaseUrl.isBlank()) {
+
             throw new SQLException(
                     "The test database URL is not configured."
             );
         }
 
         if (databaseUser.isBlank()) {
+
             throw new SQLException(
                     "The test database username is not configured."
             );
@@ -222,10 +245,16 @@ public final class DBUtil {
             String defaultValue) {
 
         String value =
-                System.getProperty(systemProperty);
+                System.getProperty(
+                        systemProperty
+                );
 
         if (value == null || value.isBlank()) {
-            value = System.getenv(environmentVariable);
+
+            value =
+                    System.getenv(
+                            environmentVariable
+                    );
         }
 
         if (value == null) {
