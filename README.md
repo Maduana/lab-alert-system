@@ -66,28 +66,33 @@ The system uses a relational **MySQL** database with the following core tables:
 ## Project Structure
 
 ```text
-AILabAlertSystem/
-├── AILabAlertSystem-ear/
+lab-alert-system/
 ├── AILabAlertSystem-ejb/
 ├── AILabAlertSystem-war/
 ├── Database/
-│   ├── create_database.sql
-│   ├── create_tables.sql
-│   ├── sample_data.sql
-│   └── views.sql
-├── UML/
-│   ├── UseCase.drawio
-│   ├── Activity.drawio
-│   ├── Sequence.drawio
-│   ├── Component.drawio
-│   └── Deployment.drawio
-├── PowerBI/
-│   └── LabAlertDashboard.pbix
+│   ├── create_database
+│   ├── create_tables
+│   └── views
 ├── Documentation/
-│   ├── UserManual.pdf
-│   ├── InstallationGuide.pdf
-│   └── Dissertation.pdf
-└── README.md
+│   ├── AI Lab Alert System User Manual v1.pdf
+│   ├── Installation Guide v1.pdf
+│   ├── ISJ107V_Assignment5_Final_213213180.pptx
+│   └── ISJ107V_Power_BI_Dasboard_Final_213213180.pptx
+├── PowerBI/
+│   └── AILabAlertSystem Dashboard.pbix
+├── UML/
+│   ├── lab_alert_activity_diagram.drawio
+│   ├── lab_alert_class_model.drawio
+│   ├── lab_alert_component_architecture.drawio
+│   ├── lab_alert_sequence_diagram.drawio
+│   └── lab_alert_use_case_diagram.drawio
+├── nbproject/
+├── src/
+│   └── conf/
+├── .gitignore
+├── build.xml
+├── README.md
+└── reporting-libs-pom.xml
 ```
 
 ---
