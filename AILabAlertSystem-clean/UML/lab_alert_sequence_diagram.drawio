@@ -1,0 +1,577 @@
+<mxfile host="Electron" agent="Gemini">
+  <diagram id="lab-alert-seq-diagram" name="Sequence Diagram">
+    <mxGraphModel dx="3071" dy="1634" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2200" pageHeight="1550" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title-box" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0f294a;strokeColor=#0a1c33;fontColor=#ffffff;fontStyle=1;fontSize=15;" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;AI-Based Laboratory Test Result Flagging and Alert System – Sequence Diagram&lt;br&gt;Complete Workflow: Result Capture, Alert Generation, Notification, Acknowledgement, Reminder, Escalation and Reporting&lt;/font&gt;" vertex="1">
+          <mxGeometry height="56" width="2120" x="40" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="band-a" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f1fb;strokeColor=#4a7ebb;strokeWidth=1.5;" value="" vertex="1">
+          <mxGeometry height="445" width="2120" x="40" y="165" as="geometry" />
+        </mxCell>
+        <mxCell id="band-a-hdr" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0f3b78;strokeColor=#0f3b78;fontColor=#ffffff;fontStyle=1;fontSize=12;align=left;spacingLeft=12;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;A. Laboratory Result Capture and Alert Generation&lt;/font&gt;" vertex="1">
+          <mxGeometry height="26" width="460" x="48" y="172" as="geometry" />
+        </mxCell>
+        <mxCell id="band-b" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fde8ec;strokeColor=#c96a7b;strokeWidth=1.5;" value="" vertex="1">
+          <mxGeometry height="230" width="2120" x="40" y="620" as="geometry" />
+        </mxCell>
+        <mxCell id="band-b-hdr" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b82947;strokeColor=#b82947;fontColor=#ffffff;fontStyle=1;fontSize=12;align=left;spacingLeft=12;" value="B. Pathologist Reviews and Acknowledges Alert" vertex="1">
+          <mxGeometry height="26" width="460" x="48" y="627" as="geometry" />
+        </mxCell>
+        <mxCell id="band-c" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eaf7ea;strokeColor=#62a862;strokeWidth=1.5;" value="" vertex="1">
+          <mxGeometry height="325" width="2120" x="40" y="860" as="geometry" />
+        </mxCell>
+        <mxCell id="band-c-hdr" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#2e7d32;strokeColor=#2e7d32;fontColor=#ffffff;fontStyle=1;fontSize=12;align=left;spacingLeft=12;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;C. Overdue Monitoring, Reminder and Escalation&lt;/font&gt;" vertex="1">
+          <mxGeometry height="26" width="460" x="48" y="867" as="geometry" />
+        </mxCell>
+        <mxCell id="band-d" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3e8fc;strokeColor=#9c6ade;strokeWidth=1.5;" value="" vertex="1">
+          <mxGeometry height="150" width="2120" x="40" y="1195" as="geometry" />
+        </mxCell>
+        <mxCell id="band-d-hdr" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#6a1b9a;strokeColor=#6a1b9a;fontColor=#ffffff;fontStyle=1;fontSize=12;align=left;spacingLeft=12;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;D. Power BI Analytics and Reporting&lt;/font&gt;" vertex="1">
+          <mxGeometry height="26" width="460" x="48" y="1202" as="geometry" />
+        </mxCell>
+        <mxCell id="p-lab" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#ffffff;strokeColor=#6a1b9a;strokeWidth=2;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Laboratory&lt;br&gt;Personnel&lt;/font&gt;" vertex="1">
+          <mxGeometry height="38" width="24" x="105" y="88" as="geometry" />
+        </mxCell>
+        <mxCell id="p-web" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d9ecff;strokeColor=#1e6bb8;strokeWidth=1.5;fontStyle=1;fontSize=11;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Web Interface&lt;br&gt;(JSP/Bootstrap)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="44" width="130" x="210" y="92" as="geometry" />
+        </mxCell>
+        <mxCell id="p-ctrl" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d9ecff;strokeColor=#1e6bb8;strokeWidth=1.5;fontStyle=1;fontSize=11;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;ResultServlet&lt;br&gt;(Controller)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="44" width="125" x="375" y="92" as="geometry" />
+        </mxCell>
+        <mxCell id="p-svc" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d9f7dc;strokeColor=#2e7d32;strokeWidth=1.5;fontStyle=1;fontSize=11;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;ResultService&lt;br&gt;(Service Layer)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="44" width="130" x="535" y="92" as="geometry" />
+        </mxCell>
+        <mxCell id="p-ai" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5e1ff;strokeColor=#7b1fa2;strokeWidth=1.5;fontStyle=1;fontSize=11;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;AI / Rule Engine&lt;br&gt;(Analysis)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="44" width="130" x="700" y="92" as="geometry" />
+        </mxCell>
+        <mxCell id="p-dao" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d9ecff;strokeColor=#1e6bb8;strokeWidth=1.5;fontStyle=1;fontSize=11;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;ResultDAO&lt;br&gt;(Data Access)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="44" width="125" x="865" y="92" as="geometry" />
+        </mxCell>
+        <mxCell id="p-db" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;fillColor=#ffe082;strokeColor=#ef6c00;strokeWidth=1.5;fontStyle=1;fontSize=11;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;MySQL&lt;br&gt;Database&lt;/font&gt;" vertex="1">
+          <mxGeometry height="52" width="80" x="1030" y="88" as="geometry" />
+        </mxCell>
+        <mxCell id="p-alertsvc" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d9ecff;strokeColor=#1e6bb8;strokeWidth=1.5;fontStyle=1;fontSize=11;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;AlertService&lt;br&gt;(Service Layer)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="44" width="130" x="1145" y="92" as="geometry" />
+        </mxCell>
+        <mxCell id="p-email" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d9ecff;strokeColor=#1e6bb8;strokeWidth=1.5;fontStyle=1;fontSize=11;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;EmailService&lt;br&gt;(External)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="44" width="125" x="1310" y="92" as="geometry" />
+        </mxCell>
+        <mxCell id="p-audit" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d9f7dc;strokeColor=#2e7d32;strokeWidth=1.5;fontStyle=1;fontSize=11;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;AuditService&lt;br&gt;(Logging)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="44" width="125" x="1470" y="92" as="geometry" />
+        </mxCell>
+        <mxCell id="p-path" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#ffffff;strokeColor=#2e7d32;strokeWidth=2;" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Pathologist&lt;/font&gt;" vertex="1">
+          <mxGeometry height="38" width="24" x="1645" y="88" as="geometry" />
+        </mxCell>
+        <mxCell id="p-sched" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5e1ff;strokeColor=#7b1fa2;strokeWidth=1.5;fontStyle=1;fontSize=11;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;AlertReminderServlet&lt;br&gt;(Scheduler)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="44" width="145" x="1720" y="92" as="geometry" />
+        </mxCell>
+        <mxCell id="p-rep" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#ffffff;strokeColor=#1e6bb8;strokeWidth=2;" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Reporting User&lt;/font&gt;" vertex="1">
+          <mxGeometry height="38" width="24" x="1995" y="88" as="geometry" />
+        </mxCell>
+        <mxCell id="ll-lab" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;strokeColor=#666666;strokeWidth=1.2;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="117" y="155" as="sourcePoint" />
+            <mxPoint x="117" y="1340" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ll-web" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;strokeColor=#666666;strokeWidth=1.2;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="275" y="136" as="sourcePoint" />
+            <mxPoint x="275" y="1340" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ll-ctrl" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;strokeColor=#666666;strokeWidth=1.2;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="437" y="136" as="sourcePoint" />
+            <mxPoint x="437" y="1340" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ll-svc" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;strokeColor=#666666;strokeWidth=1.2;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="600" y="136" as="sourcePoint" />
+            <mxPoint x="600" y="1340" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ll-ai" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;strokeColor=#666666;strokeWidth=1.2;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="765" y="136" as="sourcePoint" />
+            <mxPoint x="765" y="1340" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ll-dao" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;strokeColor=#666666;strokeWidth=1.2;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="927" y="136" as="sourcePoint" />
+            <mxPoint x="927" y="1340" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ll-db" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;strokeColor=#666666;strokeWidth=1.2;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1070" y="140" as="sourcePoint" />
+            <mxPoint x="1070" y="1340" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ll-alertsvc" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;strokeColor=#666666;strokeWidth=1.2;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1210" y="136" as="sourcePoint" />
+            <mxPoint x="1210" y="1340" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ll-email" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;strokeColor=#666666;strokeWidth=1.2;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1372" y="136" as="sourcePoint" />
+            <mxPoint x="1372" y="1340" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ll-audit" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;strokeColor=#666666;strokeWidth=1.2;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1532" y="136" as="sourcePoint" />
+            <mxPoint x="1532" y="1340" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ll-path" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;strokeColor=#666666;strokeWidth=1.2;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1657" y="155" as="sourcePoint" />
+            <mxPoint x="1657" y="1340" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ll-sched" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;strokeColor=#666666;strokeWidth=1.2;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1792" y="136" as="sourcePoint" />
+            <mxPoint x="1792" y="1340" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ll-rep" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;strokeColor=#666666;strokeWidth=1.2;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2007" y="155" as="sourcePoint" />
+            <mxPoint x="2007" y="1340" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="act-a-lab" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a8d1ff;strokeColor=#1e6bb8;" value="" vertex="1">
+          <mxGeometry height="40" width="12" x="111" y="215" as="geometry" />
+        </mxCell>
+        <mxCell id="msg-1" edge="1" parent="1" style="endArrow=classic;html=1;strokeColor=#111111;strokeWidth=1.5;" value="1. Enter patient and test result">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="123" y="225" as="sourcePoint" />
+            <mxPoint x="269" y="225" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="act-a-web" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a8d1ff;strokeColor=#1e6bb8;" value="" vertex="1">
+          <mxGeometry height="45" width="12" x="269" y="225" as="geometry" />
+        </mxCell>
+        <mxCell id="msg-2" edge="1" parent="1" style="endArrow=classic;html=1;strokeColor=#111111;strokeWidth=1.5;" value="2. Submit result">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="281" y="245" as="sourcePoint" />
+            <mxPoint x="431" y="245" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="act-a-ctrl" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a8d1ff;strokeColor=#1e6bb8;" value="" vertex="1">
+          <mxGeometry height="340" width="12" x="431" y="245" as="geometry" />
+        </mxCell>
+        <mxCell id="msg-3" edge="1" parent="1" style="endArrow=classic;html=1;strokeColor=#111111;strokeWidth=1.5;" value="3. validateInput()">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="443" y="260" as="sourcePoint" />
+            <mxPoint x="594" y="260" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="act-a-svc" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a8d1ff;strokeColor=#1e6bb8;" value="" vertex="1">
+          <mxGeometry height="145" width="12" x="594" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="msg-4" edge="1" parent="1" style="endArrow=classic;html=1;strokeColor=#111111;strokeWidth=1.5;" value="4. Check previous results (patientId, testName)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="606" y="275" as="sourcePoint" />
+            <mxPoint x="921" y="275" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="act-a-dao1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a8d1ff;strokeColor=#1e6bb8;" value="" vertex="1">
+          <mxGeometry height="35" width="12" x="921" y="275" as="geometry" />
+        </mxCell>
+        <mxCell id="msg-5" edge="1" parent="1" style="endArrow=classic;html=1;strokeColor=#111111;strokeWidth=1.5;" value="5. SELECT previous results">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="933" y="285" as="sourcePoint" />
+            <mxPoint x="1064" y="285" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="act-a-db1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a8d1ff;strokeColor=#1e6bb8;" value="" vertex="1">
+          <mxGeometry height="22" width="12" x="1064" y="285" as="geometry" />
+        </mxCell>
+        <mxCell id="msg-6" edge="1" parent="1" style="endArrow=open;dashed=1;html=1;strokeColor=#111111;strokeWidth=1.3;" value="6. previous results">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1064" y="302" as="sourcePoint" />
+            <mxPoint x="933" y="302" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg-7" edge="1" parent="1" style="endArrow=open;dashed=1;html=1;strokeColor=#111111;strokeWidth=1.3;" value="7. previous results">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="921" y="315" as="sourcePoint" />
+            <mxPoint x="606" y="315" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg-8" edge="1" parent="1" style="endArrow=classic;html=1;strokeColor=#111111;strokeWidth=1.5;" value="8. riskScore, severity, (explanation)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="595" y="335" as="sourcePoint" />
+            <mxPoint x="748" y="335" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="act-a-ai" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a8d1ff;strokeColor=#1e6bb8;" value="" vertex="1">
+          <mxGeometry height="25" width="12" x="759" y="335" as="geometry" />
+        </mxCell>
+        <mxCell id="msg-9" edge="1" parent="1" style="endArrow=classic;html=1;strokeColor=#111111;strokeWidth=1.5;" value="9. saveResult()">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="606" y="372" as="sourcePoint" />
+            <mxPoint x="921" y="372" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="act-a-dao2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a8d1ff;strokeColor=#1e6bb8;" value="" vertex="1">
+          <mxGeometry height="32" width="12" x="921" y="372" as="geometry" />
+        </mxCell>
+        <mxCell id="msg-10" edge="1" parent="1" style="endArrow=classic;html=1;strokeColor=#111111;strokeWidth=1.5;" value="10. INSERT lab_result">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="933" y="382" as="sourcePoint" />
+            <mxPoint x="1064" y="382" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="act-a-db2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a8d1ff;strokeColor=#1e6bb8;" value="" vertex="1">
+          <mxGeometry height="20" width="12" x="1064" y="382" as="geometry" />
+        </mxCell>
+        <mxCell id="msg-11" edge="1" parent="1" style="endArrow=open;dashed=1;html=1;strokeColor=#111111;strokeWidth=1.3;" value="11. resultId">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1064" y="398" as="sourcePoint" />
+            <mxPoint x="933" y="398" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="alt-a" parent="1" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;width=45;height=22;fillColor=#ffffff;strokeColor=#333333;fontStyle=1;" value="alt" vertex="1">
+          <mxGeometry height="182" width="1660" x="250" y="415" as="geometry" />
+        </mxCell>
+        <mxCell id="alt-a-cond1" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontStyle=1;fontSize=11;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;[Result is abnormal, warning or critical]&lt;/font&gt;" vertex="1">
+          <mxGeometry height="20" width="280" x="302" y="416" as="geometry" />
+        </mxCell>
+        <mxCell id="msg-12" edge="1" parent="1" style="endArrow=classic;html=1;strokeColor=#111111;strokeWidth=1.5;" value="&lt;font style=&quot;font-size: 12px;&quot;&gt;12. createAlert(resultId, severity, message)&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="443" y="445" as="sourcePoint" />
+            <mxPoint x="1204" y="445" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="act-a-alertsvc" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a8d1ff;strokeColor=#1e6bb8;" value="" vertex="1">
+          <mxGeometry height="80" width="12" x="1204" y="445" as="geometry" />
+        </mxCell>
+        <mxCell id="msg-13" edge="1" parent="1" style="endArrow=classic;html=1;strokeColor=#111111;strokeWidth=1.5;" value="13. INSERT alert">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1204" y="458" as="sourcePoint" />
+            <mxPoint x="1076" y="458" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg-14" edge="1" parent="1" style="endArrow=open;dashed=1;html=1;strokeColor=#111111;strokeWidth=1.3;" value="14. alertId">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1076" y="472" as="sourcePoint" />
+            <mxPoint x="1204" y="472" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg-15" edge="1" parent="1" style="endArrow=classic;html=1;strokeColor=#111111;strokeWidth=1.5;" value="15. sendAlertEmail(alertId)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1216" y="485" as="sourcePoint" />
+            <mxPoint x="1366" y="485" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="act-a-email" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a8d1ff;strokeColor=#1e6bb8;" value="" vertex="1">
+          <mxGeometry height="25" width="12" x="1366" y="485" as="geometry" />
+        </mxCell>
+        <mxCell id="msg-16" edge="1" parent="1" style="endArrow=classic;html=1;strokeColor=#111111;strokeWidth=1.5;" value="&lt;font style=&quot;font-size: 12px;&quot;&gt;16. sendEmail(pathologist, alert details)&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1378" y="495" as="sourcePoint" />
+            <mxPoint x="1651" y="495" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg-18" edge="1" parent="1" style="endArrow=classic;html=1;strokeColor=#111111;strokeWidth=1.5;" value="&lt;font style=&quot;font-size: 12px;&quot;&gt;18. logEvent(ALERT_CREATED)&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1216" y="518" as="sourcePoint" />
+            <mxPoint x="1526" y="518" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="act-a-audit1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a8d1ff;strokeColor=#1e6bb8;" value="" vertex="1">
+          <mxGeometry height="20" width="12" x="1526" y="518" as="geometry" />
+        </mxCell>
+        <mxCell id="alt-a-div" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;strokeColor=#333333;strokeWidth=1.2;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="250" y="545" as="sourcePoint" />
+            <mxPoint x="1910" y="545" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="alt-a-cond2" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontStyle=1;fontSize=11;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;[Result is normal]&lt;/font&gt;" vertex="1">
+          <mxGeometry height="20" width="140" x="258" y="548" as="geometry" />
+        </mxCell>
+        <mxCell id="msg-20" edge="1" parent="1" style="endArrow=classic;html=1;strokeColor=#111111;strokeWidth=1.5;" value="&lt;font style=&quot;font-size: 12px;&quot;&gt;20. logEvent(RESULT_CAPTURED)&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="443" y="568" as="sourcePoint" />
+            <mxPoint x="1526" y="568" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="act-a-audit2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a8d1ff;strokeColor=#1e6bb8;" value="" vertex="1">
+          <mxGeometry height="20" width="12" x="1526" y="568" as="geometry" />
+        </mxCell>
+        <mxCell id="note-a" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d4edda;strokeColor=#2e7d32;fontSize=11;align=left;spacing=8;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;The system validates the result, evaluates it using AI/Rule Engine, saves the result and generates an alert if required. Notifications and audit events are recorded.&lt;/font&gt;" vertex="1">
+          <mxGeometry height="122.5" width="215" x="1925" y="247.5" as="geometry" />
+        </mxCell>
+        <mxCell id="note-17" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe0b2;strokeColor=#ef6c00;fontStyle=1;fontSize=11;align=center;" value="&lt;font style=&quot;font-size: 12px;&quot;&gt;17. Alert notification email with secure link&lt;/font&gt;" vertex="1">
+          <mxGeometry height="44" width="185" x="1685" y="472" as="geometry" />
+        </mxCell>
+        <mxCell id="act-b-path" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a8d1ff;strokeColor=#1e6bb8;" value="" vertex="1">
+          <mxGeometry height="35" width="12" x="1651" y="665" as="geometry" />
+        </mxCell>
+        <mxCell id="msg-22" edge="1" parent="1" style="endArrow=classic;html=1;strokeColor=#111111;strokeWidth=1.5;" value="&lt;font style=&quot;font-size: 12px;&quot;&gt;22. Click secure link (from email)&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1651" y="675" as="sourcePoint" />
+            <mxPoint x="281" y="675" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="act-b-web" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a8d1ff;strokeColor=#1e6bb8;" value="" vertex="1">
+          <mxGeometry height="125" width="12" x="269" y="675" as="geometry" />
+        </mxCell>
+        <mxCell id="msg-23" edge="1" parent="1" style="endArrow=classic;html=1;strokeColor=#111111;strokeWidth=1.5;" value="23. Open alert">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="281" y="695" as="sourcePoint" />
+            <mxPoint x="431" y="695" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="act-b-ctrl" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a8d1ff;strokeColor=#1e6bb8;" value="" vertex="1">
+          <mxGeometry height="130" width="12" x="431" y="695" as="geometry" />
+        </mxCell>
+        <mxCell id="msg-24" edge="1" parent="1" style="endArrow=classic;html=1;strokeColor=#111111;strokeWidth=1.5;" value="24. getAlert(alertId)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="443" y="708" as="sourcePoint" />
+            <mxPoint x="1204" y="708" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="act-b-alertsvc1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a8d1ff;strokeColor=#1e6bb8;" value="" vertex="1">
+          <mxGeometry height="30" width="12" x="1204" y="708" as="geometry" />
+        </mxCell>
+        <mxCell id="msg-25" edge="1" parent="1" style="endArrow=classic;html=1;strokeColor=#111111;strokeWidth=1.5;" value="25. SELECT alert details">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1204" y="718" as="sourcePoint" />
+            <mxPoint x="1076" y="718" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg-26" edge="1" parent="1" style="endArrow=open;dashed=1;html=1;strokeColor=#111111;strokeWidth=1.3;" value="26. alert data">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1076" y="732" as="sourcePoint" />
+            <mxPoint x="1204" y="732" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg-27" edge="1" parent="1" style="endArrow=open;dashed=1;html=1;strokeColor=#111111;strokeWidth=1.3;" value="27. Display alert details">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="431" y="745" as="sourcePoint" />
+            <mxPoint x="281" y="745" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg-29" edge="1" parent="1" style="endArrow=classic;html=1;strokeColor=#111111;strokeWidth=1.5;" value="29. AcknowledgeAlert(alertId, userId)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="443" y="762" as="sourcePoint" />
+            <mxPoint x="1204" y="762" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="act-b-alertsvc2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a8d1ff;strokeColor=#1e6bb8;" value="" vertex="1">
+          <mxGeometry height="45" width="12" x="1204" y="762" as="geometry" />
+        </mxCell>
+        <mxCell id="msg-30" edge="1" parent="1" style="endArrow=classic;html=1;strokeColor=#111111;strokeWidth=1.5;" value="30. UPDATE alert (acknowledged, acknowledgedBy, time)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1204" y="775" as="sourcePoint" />
+            <mxPoint x="1076" y="775" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg-32" edge="1" parent="1" style="endArrow=classic;html=1;strokeColor=#111111;strokeWidth=1.5;" value="32. logEvent(ALERT_ACKNOWLEDGED)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1216" y="795" as="sourcePoint" />
+            <mxPoint x="1526" y="795" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="act-b-audit" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a8d1ff;strokeColor=#1e6bb8;" value="" vertex="1">
+          <mxGeometry height="22" width="12" x="1526" y="795" as="geometry" />
+        </mxCell>
+        <mxCell id="msg-33" edge="1" parent="1" style="endArrow=open;dashed=1;html=1;strokeColor=#111111;strokeWidth=1.3;" value="33. success">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1526" y="812" as="sourcePoint" />
+            <mxPoint x="1216" y="812" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="note-b" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe0b2;strokeColor=#ef6c00;fontSize=11;align=left;spacing=8;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;The pathologist reviews the alert and acknowledges it. The system updates the alert status and records an audit event.&lt;/font&gt;" vertex="1">
+          <mxGeometry height="100" width="215" x="1925" y="665" as="geometry" />
+        </mxCell>
+        <mxCell id="p-sched-c" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#ffffff;strokeColor=#6a1b9a;strokeWidth=2;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Scheduler&lt;br&gt;(Cron Job)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="38" width="24" x="105" y="895" as="geometry" />
+        </mxCell>
+        <mxCell id="msg-34" edge="1" parent="1" style="endArrow=classic;html=1;strokeColor=#111111;strokeWidth=1.5;" value="&lt;font style=&quot;font-size: 12px;&quot;&gt;34. Trigger scheduled check&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="123" y="910" as="sourcePoint" />
+            <mxPoint x="1786" y="910" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="act-c-sched" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a8d1ff;strokeColor=#1e6bb8;" value="" vertex="1">
+          <mxGeometry height="260" width="12" x="1786" y="910" as="geometry" />
+        </mxCell>
+        <mxCell id="msg-35" edge="1" parent="1" style="endArrow=classic;html=1;strokeColor=#111111;strokeWidth=1.5;" value="35. getOverdueAlerts()">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1786" y="930" as="sourcePoint" />
+            <mxPoint x="1216" y="930" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="act-c-alertsvc" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a8d1ff;strokeColor=#1e6bb8;" value="" vertex="1">
+          <mxGeometry height="230" width="12" x="1204" y="930" as="geometry" />
+        </mxCell>
+        <mxCell id="msg-36" edge="1" parent="1" style="endArrow=classic;html=1;strokeColor=#111111;strokeWidth=1.5;" value="36. SELECT overdue alerts">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1204" y="942" as="sourcePoint" />
+            <mxPoint x="1076" y="942" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg-37" edge="1" parent="1" style="endArrow=open;dashed=1;html=1;strokeColor=#111111;strokeWidth=1.3;" value="37. list of overdue alerts">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1076" y="956" as="sourcePoint" />
+            <mxPoint x="1204" y="956" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="loop-c" parent="1" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;width=48;height=22;fillColor=#ffffff;strokeColor=#333333;fontStyle=1;" value="loop" vertex="1">
+          <mxGeometry height="205" width="1380" x="520" y="968" as="geometry" />
+        </mxCell>
+        <mxCell id="loop-c-cond" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontStyle=1;fontSize=11;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;[For each overdue alert]&lt;/font&gt;" vertex="1">
+          <mxGeometry height="20" width="220" x="575" y="969" as="geometry" />
+        </mxCell>
+        <mxCell id="msg-38" edge="1" parent="1" style="endArrow=classic;html=1;strokeColor=#111111;strokeWidth=1.5;" value="38. sendReminderEmail(alertId)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1216" y="998" as="sourcePoint" />
+            <mxPoint x="1366" y="998" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="act-c-email1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a8d1ff;strokeColor=#1e6bb8;" value="" vertex="1">
+          <mxGeometry height="22" width="12" x="1366" y="998" as="geometry" />
+        </mxCell>
+        <mxCell id="msg-39" edge="1" parent="1" style="endArrow=classic;html=1;strokeColor=#111111;strokeWidth=1.5;" value="39. sendEmail(reminder)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1378" y="1008" as="sourcePoint" />
+            <mxPoint x="1651" y="1008" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg-40" edge="1" parent="1" style="endArrow=classic;html=1;strokeColor=#111111;strokeWidth=1.5;" value="40. logEvent(REMINDER_SENT)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1216" y="1026" as="sourcePoint" />
+            <mxPoint x="1526" y="1026" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="act-c-audit1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a8d1ff;strokeColor=#1e6bb8;" value="" vertex="1">
+          <mxGeometry height="18" width="12" x="1526" y="1026" as="geometry" />
+        </mxCell>
+        <mxCell id="alt-c" parent="1" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;width=45;height=22;fillColor=#ffffff;strokeColor=#333333;fontStyle=1;" value="alt" vertex="1">
+          <mxGeometry height="115" width="1340" x="540" y="1048" as="geometry" />
+        </mxCell>
+        <mxCell id="alt-c-cond" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontStyle=1;fontSize=11;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;[Reminder limit reached]&lt;/font&gt;" vertex="1">
+          <mxGeometry height="20" width="200" x="592" y="1049" as="geometry" />
+        </mxCell>
+        <mxCell id="msg-41" edge="1" parent="1" style="endArrow=classic;html=1;strokeColor=#111111;strokeWidth=1.5;" value="41. escalateAlert(alertId)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1216" y="1075" as="sourcePoint" />
+            <mxPoint x="1366" y="1075" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="act-c-email2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a8d1ff;strokeColor=#1e6bb8;" value="" vertex="1">
+          <mxGeometry height="45" width="12" x="1366" y="1075" as="geometry" />
+        </mxCell>
+        <mxCell id="msg-42" edge="1" parent="1" style="endArrow=classic;html=1;strokeColor=#111111;strokeWidth=1.5;" value="42. UPDATE escalation_level">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1204" y="1088" as="sourcePoint" />
+            <mxPoint x="1076" y="1088" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg-43" edge="1" parent="1" style="endArrow=open;dashed=1;html=1;strokeColor=#111111;strokeWidth=1.3;" value="43. success">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1076" y="1102" as="sourcePoint" />
+            <mxPoint x="1204" y="1102" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg-45" edge="1" parent="1" style="endArrow=classic;html=1;strokeColor=#111111;strokeWidth=1.5;" value="45. sendEmail(escalation)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1378" y="1115" as="sourcePoint" />
+            <mxPoint x="1651" y="1115" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg-46" edge="1" parent="1" style="endArrow=classic;html=1;strokeColor=#111111;strokeWidth=1.5;" value="46. logEvent(ALERT_ESCALATED)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1216" y="1138" as="sourcePoint" />
+            <mxPoint x="1526" y="1138" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="act-c-audit2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a8d1ff;strokeColor=#1e6bb8;" value="" vertex="1">
+          <mxGeometry height="18" width="12" x="1526" y="1138" as="geometry" />
+        </mxCell>
+        <mxCell id="note-c" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe0b2;strokeColor=#ef6c00;fontSize=11;align=left;spacing=8;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;The scheduler checks for overdue alerts, sends reminder notifications and escalates alerts that exceed the reminder limit. All actions are automatically logged.&lt;/font&gt;" vertex="1">
+          <mxGeometry height="130" width="215" x="1925" y="935" as="geometry" />
+        </mxCell>
+        <mxCell id="p-powerbi" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0d47a1;strokeColor=#082f6b;fontColor=#ffffff;fontStyle=1;fontSize=11;" value="Power BI&#xa;Dashboard" vertex="1">
+          <mxGeometry height="36" width="115" x="1950" y="1235" as="geometry" />
+        </mxCell>
+        <mxCell id="msg-47" edge="1" parent="1" style="endArrow=classic;html=1;strokeColor=#111111;strokeWidth=1.5;" value="47. Open dashboard">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2007" y="1272" as="sourcePoint" />
+            <mxPoint x="2007" y="1290" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="act-d-rep" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a8d1ff;strokeColor=#1e6bb8;" value="" vertex="1">
+          <mxGeometry height="55" width="12" x="2001" y="1275" as="geometry" />
+        </mxCell>
+        <mxCell id="msg-48" edge="1" parent="1" style="endArrow=classic;html=1;strokeColor=#111111;strokeWidth=1.5;" value="&lt;font style=&quot;font-size: 12px;&quot;&gt;48. Retrieve data (vw_powerbi_alerts)&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2001" y="1290" as="sourcePoint" />
+            <mxPoint x="1076" y="1290" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="act-d-db" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a8d1ff;strokeColor=#1e6bb8;" value="" vertex="1">
+          <mxGeometry height="35" width="12" x="1064" y="1290" as="geometry" />
+        </mxCell>
+        <mxCell id="msg-49" edge="1" parent="1" style="endArrow=open;dashed=1;html=1;strokeColor=#111111;strokeWidth=1.3;" value="&lt;font style=&quot;font-size: 12px;&quot;&gt;49. aggregated data&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1076" y="1310" as="sourcePoint" />
+            <mxPoint x="2001" y="1310" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg-50" edge="1" parent="1" style="endArrow=open;dashed=1;html=1;strokeColor=#111111;strokeWidth=1.3;" value="50. Display KPIs, trends and reports">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2001" y="1325" as="sourcePoint" />
+            <mxPoint x="1950" y="1325" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="note-d" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe0b2;strokeColor=#ef6c00;fontSize=11;align=left;spacing=8;" value="Authorized users access Power BI dashboards for real-time and historical analytics." vertex="1">
+          <mxGeometry height="80" width="145" x="1802" y="1200" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-box" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#555555;strokeWidth=1.2;" value="" vertex="1">
+          <mxGeometry height="75" width="760" x="45" y="1360" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontStyle=1;fontSize=13;" value="Legend" vertex="1">
+          <mxGeometry height="22" width="80" x="58" y="1364" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-actor" parent="1" style="shape=umlActor;verticalLabelPosition=right;verticalAlign=middle;html=1;labelPosition=right;align=left;spacingLeft=6;fillColor=#ffffff;strokeColor=#333333;" value="Actor" vertex="1">
+          <mxGeometry height="28" width="18" x="65" y="1394" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-act" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a8d1ff;strokeColor=#1e6bb8;labelPosition=right;align=left;spacingLeft=6;" value="Activation (processing)" vertex="1">
+          <mxGeometry height="28" width="14" x="165" y="1395" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-ret" edge="1" parent="1" style="endArrow=open;dashed=1;html=1;strokeColor=#111111;labelBackgroundColor=#ffffff;" value="Return message">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="335" y="1409" as="sourcePoint" />
+            <mxPoint x="395" y="1409" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="leg-ret-lbl" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=11;" value="Return message" vertex="1">
+          <mxGeometry height="22" width="105" x="400" y="1398" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-sync" edge="1" parent="1" style="endArrow=classic;html=1;strokeColor=#111111;strokeWidth=1.5;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="515" y="1409" as="sourcePoint" />
+            <mxPoint x="575" y="1409" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="leg-sync-lbl" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=11;" value="Synchronous call" vertex="1">
+          <mxGeometry height="22" width="115" x="580" y="1398" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

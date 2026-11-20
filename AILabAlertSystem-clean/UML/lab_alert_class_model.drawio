@@ -1,0 +1,219 @@
+<mxfile host="Electron" agent="Gemini">
+  <diagram id="lab-alert-class-model" name="Class Model">
+    <mxGraphModel dx="2235" dy="1325" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2200" pageHeight="1550" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title-banner" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#083d77;strokeColor=#05254a;fontColor=#ffffff;fontStyle=1;fontSize=16;" value="&lt;font style=&quot;font-size: 20px;&quot;&gt;AI-Based Laboratory Test Result Flagging and Alert System – Class Model&lt;/font&gt;" vertex="1">
+          <mxGeometry height="46" width="2140" x="30" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="cls-user" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#d9ecff;strokeColor=#1e6bb8;strokeWidth=1.5;fontSize=14;" value="User" vertex="1">
+          <mxGeometry height="260" width="230" x="40" y="85" as="geometry" />
+        </mxCell>
+        <mxCell id="cls-user-attr" parent="cls-user" style="text;strokeColor=#6c8ebf;fillColor=#dae8fc;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=13;" value="- userId: int (PK)&#xa;- username: String&#xa;- passwordHash: String&#xa;- fullName: String&#xa;- role: String&#xa;- active: boolean&#xa;- createdAt: Timestamp" vertex="1">
+          <mxGeometry height="132" width="230" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="cls-user-div" parent="cls-user" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#1e6bb8;" value="" vertex="1">
+          <mxGeometry height="8" width="230" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="cls-user-meth" parent="cls-user" style="text;strokeColor=#6c8ebf;fillColor=#dae8fc;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=13;" value="+ authenticate(username, password): boolean&#xa;+ hasRole(role): boolean&#xa;+ getPathologistId(): Integer&#xa;+ logout(): void" vertex="1">
+          <mxGeometry height="92" width="230" y="168" as="geometry" />
+        </mxCell>
+        <mxCell id="cls-path" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#d9f7dc;strokeColor=#2e7d32;strokeWidth=1.5;fontSize=14;" value="Pathologist" vertex="1">
+          <mxGeometry height="260" width="265" x="340" y="85" as="geometry" />
+        </mxCell>
+        <mxCell id="cls-path-attr" parent="cls-path" style="text;strokeColor=#82b366;fillColor=#d5e8d4;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=13;" value="- pathologistId: int (PK)&#xa;- userId: int (FK)&#xa;- employeeCode: String&#xa;- registrationNumber: String&#xa;- email: String&#xa;- phone: String&#xa;- specialty: String&#xa;- active: boolean" vertex="1">
+          <mxGeometry height="152" width="265" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="cls-path-div" parent="cls-path" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#2e7d32;" value="" vertex="1">
+          <mxGeometry height="8" width="265" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="cls-path-meth" parent="cls-path" style="text;strokeColor=#82b366;fillColor=#d5e8d4;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=13;" value="+ findByUserId(userId): Pathologist&#xa;+ getAssignedPatients(): List&lt;Patient&gt;&#xa;+ canAccessPatient(patientId): boolean" vertex="1">
+          <mxGeometry height="72" width="265" y="188" as="geometry" />
+        </mxCell>
+        <mxCell id="cls-pat" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#fff2cc;strokeColor=#d69e00;strokeWidth=1.5;fontSize=14;" value="Patient" vertex="1">
+          <mxGeometry height="275" width="260" x="680" y="85" as="geometry" />
+        </mxCell>
+        <mxCell id="cls-pat-attr" parent="cls-pat" style="text;strokeColor=#d6b656;fillColor=#fff2cc;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=13;" value="- patientId: int (PK)&#xa;- patientCode: String&#xa;- firstName: String&#xa;- surname: String&#xa;- dateOfBirth: Date&#xa;- gender: String&#xa;- phone: String&#xa;- pathologistId: int (FK)" vertex="1">
+          <mxGeometry height="152" width="260" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="cls-pat-div" parent="cls-pat" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#d69e00;" value="" vertex="1">
+          <mxGeometry height="8" width="260" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="cls-pat-meth" parent="cls-pat" style="text;strokeColor=#d6b656;fillColor=#fff2cc;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=13;" value="+ getFullName(): String&#xa;+ getAssignedPathologist(): Pathologist&#xa;+ getLaboratoryResults(): List&lt;LabResult&gt;&#xa;+ getAlerts(): List&lt;Alert&gt;" vertex="1">
+          <mxGeometry height="87" width="260" y="188" as="geometry" />
+        </mxCell>
+        <mxCell id="cls-labres" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#ede7f6;strokeColor=#6a1b9a;strokeWidth=1.5;fontSize=14;" value="LabResult" vertex="1">
+          <mxGeometry height="340" width="275" x="1170" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="cls-labres-attr" parent="cls-labres" style="text;strokeColor=#9673a6;fillColor=#e1d5e7;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=13;" value="- resultId: int (PK)&#xa;- patientId: int (FK)&#xa;- testName: String&#xa;- resultValue: double&#xa;- unit: String&#xa;- normalMinimum: double&#xa;- normalMaximum: double&#xa;- resultStatus: String&#xa;- riskScore: double&#xa;- resultComment: String&#xa;- capturedAt: Timestamp" vertex="1">
+          <mxGeometry height="205" width="275" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="cls-labres-div" parent="cls-labres" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#6a1b9a;" value="" vertex="1">
+          <mxGeometry height="8" width="275" y="233" as="geometry" />
+        </mxCell>
+        <mxCell id="cls-labres-meth" parent="cls-labres" style="text;strokeColor=#9673a6;fillColor=#e1d5e7;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=13;" value="+ validate(): boolean&#xa;+ findPreviousValue(): Double&#xa;+ setEvaluation(e: EvaluationResult): void&#xa;+ save(): int" vertex="1">
+          <mxGeometry height="99" width="275" y="241" as="geometry" />
+        </mxCell>
+        <mxCell id="cls-auditlog" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#ffe6cc;strokeColor=#d79b00;strokeWidth=1.5;" value="AuditLog" vertex="1">
+          <mxGeometry height="315" width="230" x="40" y="425" as="geometry" />
+        </mxCell>
+        <mxCell id="cls-auditlog-attr" parent="cls-auditlog" style="text;strokeColor=#d79b00;fillColor=#ffe6cc;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=13;" value="- auditLogId: int (PK)&#xa;- userId: int (FK, nullable)&#xa;- username: String&#xa;- role: String&#xa;- actionType: String&#xa;- entityType: String&#xa;- entityId: int (nullable)&#xa;- eventDetails: String&#xa;- createdAt: Timestamp" vertex="1">
+          <mxGeometry height="172" width="230" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="cls-auditlog-div" parent="cls-auditlog" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#d79b00;" value="" vertex="1">
+          <mxGeometry height="8" width="230" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="cls-auditlog-meth" parent="cls-auditlog" style="text;strokeColor=#d79b00;fillColor=#ffe6cc;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=13;" value="+ recordEvent(): int&#xa;+ findLatest(limit): List&lt;AuditLog&gt;&#xa;+ exportToPDF(): File&#xa;+ exportToExcel(): File&#xa;+ getSummary(): String" vertex="1">
+          <mxGeometry height="107" width="230" y="208" as="geometry" />
+        </mxCell>
+        <mxCell id="cls-alert" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=1.5;fontSize=14;" value="Alert" vertex="1">
+          <mxGeometry height="325" width="440" x="1080" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="cls-alert-attr" parent="cls-alert" style="text;strokeColor=#b85450;fillColor=#f8cecc;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=13;" value="- alertId: int (PK)              + escalatedAt: Timestamp&#xa;- resultId: int (FK)               + escalationLevel: int&#xa;- patientId: int (FK)               + reminderCount: int&#xa;- severity: String                   + lastReminderAt: Timestamp&#xa;- alertMessage: String            + reminderLimitFlag: boolean&#xa;- notificationStatus: String&#xa;- acknowledged: boolean&#xa;- acknowledgedByPathologistId: int (FK)&#xa;- acknowledgedBy: String&#xa;- acknowledgedAt: Timestamp&#xa;- createdAt: Timestamp" vertex="1">
+          <mxGeometry height="197" width="440" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="cls-alert-div" parent="cls-alert" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#b85450;" value="" vertex="1">
+          <mxGeometry height="8" width="440" y="225" as="geometry" />
+        </mxCell>
+        <mxCell id="cls-alert-meth" parent="cls-alert" style="text;strokeColor=#b85450;fillColor=#f8cecc;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=13;" value="+ create(): int&#xa;+ acknowledge(pathologistId): boolean&#xa;+ verifyOwnership(pathologistId): boolean&#xa;+ updateNotificationStatus(status): void&#xa;+ isAcknowledged(): boolean" vertex="1">
+          <mxGeometry height="92" width="440" y="233" as="geometry" />
+        </mxCell>
+        <mxCell id="cls-ai" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#b1ddf0;strokeColor=#10739e;strokeWidth=1.5;fontSize=14;" value="AI / RuleEngine" vertex="1">
+          <mxGeometry height="213" width="250" x="35" y="845" as="geometry" />
+        </mxCell>
+        <mxCell id="cls-ai-meth" parent="cls-ai" style="text;strokeColor=#10739e;fillColor=#b1ddf0;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=13;" value="+ evaluate(result: LabResult,&#xa;    previousValue: Double): EvaluationResult&#xa;+ compareWithPreviousResult(): double&#xa;+ calculateRiskScore(): double&#xa;+ assignClassification(): String&#xa;+ generateExplanation(): String" vertex="1">
+          <mxGeometry height="185" width="250" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="cls-alertsvc" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#b1ddf0;strokeColor=#10739e;strokeWidth=1.5;fontSize=14;" value="AlertService" vertex="1">
+          <mxGeometry height="265" width="290" x="346.5" y="835" as="geometry" />
+        </mxCell>
+        <mxCell id="cls-alertsvc-meth" parent="cls-alertsvc" style="text;strokeColor=#10739e;fillColor=#b1ddf0;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=13;" value="+ processResult(result: LabResult): String&#xa;+ createAlert(result: LabResult, eval:&#xa;    EvaluationResult): int&#xa;+ sendNotification(alertId: int, result:&#xa;    LabResult): boolean&#xa;+ updateNotificationStatus(alertId: int, status: String): void&#xa;+ getOpenAlerts(): List&lt;Alert&gt;&#xa;+ getOverdueAlerts(): List&lt;Alert&gt;&#xa;+ processReminder(alertId: int): boolean&#xa;+ escalateAlert(alertId: int): boolean" vertex="1">
+          <mxGeometry height="237" width="290" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="cls-emailsvc" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#b1ddf0;strokeColor=#10739e;strokeWidth=1.5;fontSize=14;" value="EmailService" vertex="1">
+          <mxGeometry height="225" width="315" x="698" y="845" as="geometry" />
+        </mxCell>
+        <mxCell id="cls-emailsvc-meth" parent="cls-emailsvc" style="text;strokeColor=#10739e;fillColor=#b1ddf0;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=13;" value="+ findAssignedRecipient(patientId: int): Pathologist&#xa;+ createSecureReviewLink(alertId: int): String&#xa;+ buildAlertEmail(result: LabResult, eval:&#xa;    EvaluationResult): String&#xa;+ sendAlertEmail(result: LabResult, eval:&#xa;    EvaluationResult, alertId: int): boolean&#xa;+ sendEscalationEmail(alertId: int): boolean&#xa;+ sendTestEmail(to: String): boolean" vertex="1">
+          <mxGeometry height="197" width="315" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="cls-auditsvc" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#b1ddf0;strokeColor=#10739e;strokeWidth=1.5;fontSize=14;" value="AuditService" vertex="1">
+          <mxGeometry height="245" width="340" x="1070" y="845" as="geometry" />
+        </mxCell>
+        <mxCell id="cls-auditsvc-meth" parent="cls-auditsvc" style="text;strokeColor=#10739e;fillColor=#b1ddf0;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=13;" value="+ logLogin(userId: int, success: boolean): void&#xa;+ logResultCapture(userId: int, resultId: int): void&#xa;+ logAlertCreation(userId: int, alertId: int): void&#xa;+ logEmailOutcome(alertId: int, status: String): void&#xa;+ logAcknowledgement(alertId: int, pathologistId: int): void&#xa;+ logReminderSent(alertId: int): void&#xa;+ logEscalation(alertId: int): void&#xa;+ logDashboardAccess(userId: int): void&#xa;+ logAccessAttempt(userId: int, details: String): void&#xa;+ logReportExport(userId: int, reportType: String): void" vertex="1">
+          <mxGeometry height="217" width="340" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="cls-sched" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#b1ddf0;strokeColor=#10739e;strokeWidth=1.5;" value="AlertReminderServlet" vertex="1">
+          <mxGeometry height="225" width="265" x="1470" y="845" as="geometry" />
+        </mxCell>
+        <mxCell id="cls-sched-attr" parent="cls-sched" style="text;strokeColor=#10739e;fillColor=#b1ddf0;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=13;" value="- alertService: AlertService&#xa;- emailService: EmailService&#xa;- auditService: AuditService" vertex="1">
+          <mxGeometry height="62" width="265" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="cls-sched-div" parent="cls-sched" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#1976d2;" value="" vertex="1">
+          <mxGeometry height="8" width="265" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="cls-sched-meth" parent="cls-sched" style="text;strokeColor=#10739e;fillColor=#b1ddf0;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=13;" value="+ processReminderCycle(): void&#xa;+ sendReminders(): int&#xa;+ escalateOverdueAlerts(): int&#xa;+ doGet(req, res): void" vertex="1">
+          <mxGeometry height="127" width="265" y="98" as="geometry" />
+        </mxCell>
+        <mxCell id="cls-evalres" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#e8f5e9;strokeColor=#2e7d32;strokeWidth=1.5;fontSize=14;" value="EvaluationResult (value object)" vertex="1">
+          <mxGeometry height="145" width="250" x="367" y="1190" as="geometry" />
+        </mxCell>
+        <mxCell id="cls-evalres-attr" parent="cls-evalres" style="text;strokeColor=#82b366;fillColor=#d5e8d4;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=13;" value="- status: String&#xa;- severity: String&#xa;- riskScore: double&#xa;- explanation: String&#xa;- alertRequired: boolean" vertex="1">
+          <mxGeometry height="117" width="250" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="grp-pbi" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#b0e3e6;strokeColor=#0e8088;strokeWidth=1.5;fontSize=14;" value="Power BI Reporting Views" vertex="1">
+          <mxGeometry height="215" width="480" x="1310" y="1140" as="geometry" />
+        </mxCell>
+        <mxCell id="grp-pbi-inner" parent="grp-pbi" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=0;horizontalStack=1;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=none;strokeColor=none;" value="" vertex="1">
+          <mxGeometry height="187" width="480" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="view-alert" parent="grp-pbi-inner" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=24;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=#ffffff;strokeColor=#00838f;" value="PowerBIAlertView" vertex="1">
+          <mxGeometry height="187" width="275" as="geometry" />
+        </mxCell>
+        <mxCell id="view-alert-cols" parent="view-alert" style="text;strokeColor=#0e8088;fillColor=#b0e3e6;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=13;" value="- alertId: int            - unit: String&#xa;- patientCode: String   - severity: String&#xa;- patientName: String   - reviewStatus: String&#xa;- testName: String        - reviewMinutes: int&#xa;- resultValue: double   - pathologist: String&#xa;- unit: String               - createdAt: Timestamp" vertex="1">
+          <mxGeometry height="163" width="275" y="24" as="geometry" />
+        </mxCell>
+        <mxCell id="view-audit" parent="grp-pbi-inner" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=24;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=#ffffff;strokeColor=#00838f;" value="PowerBIAuditView" vertex="1">
+          <mxGeometry height="187" width="205" x="275" as="geometry" />
+        </mxCell>
+        <mxCell id="view-audit-cols" parent="view-audit" style="text;strokeColor=#0e8088;fillColor=#b0e3e6;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=13;" value="- eventId: int            - details: String&#xa;- username: String      - eventTime:&#xa;- actionType: String      Timestamp&#xa;- entityType: String&#xa;- entityId: int" vertex="1">
+          <mxGeometry height="163" width="205" y="24" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-mult" parent="1" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=6 4;fillColor=#f5f9ff;strokeColor=#1976d2;strokeWidth=1.5;fontSize=11;align=left;spacingLeft=12;fontStyle=1;" value="&lt;font style=&quot;font-size: 15px;&quot;&gt;Multiplicity Legend&lt;br&gt;1        = exactly one&lt;br&gt;0..1   = zero or one&lt;br&gt;0..*   = zero, one or many&lt;br&gt;1..*   = one or many&lt;/font&gt;" vertex="1">
+          <mxGeometry height="145" width="250" x="1500" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-diag" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=#ffffff;strokeColor=#444444;strokeWidth=1.2;fontSize=14;" value="Diagram Legend" vertex="1">
+          <mxGeometry height="210" width="220" x="770" y="1140" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-diag-items" parent="leg-diag" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=14;" value="◆       Composition&#xa;──    Association&#xa;- -▶  Dependency&#xa;&#xa;PK   Primary Key&#xa;FK   Foreign Key" vertex="1">
+          <mxGeometry height="184" width="220" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-user-path" edge="1" parent="1" source="cls-user" style="endArrow=none;html=1;strokeColor=#111111;strokeWidth=1.5;startArrow=diamond;startFill=1;" target="cls-path" value="1                 0..1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-path-pat" edge="1" parent="1" source="cls-path" style="endArrow=none;html=1;strokeColor=#111111;strokeWidth=1.5;" target="cls-pat" value="1                 0..*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-pat-labres" edge="1" parent="1" source="cls-pat" style="endArrow=none;html=1;strokeColor=#111111;strokeWidth=1.5;startArrow=diamond;startFill=1;entryX=0;entryY=0.598;entryDx=0;entryDy=0;entryPerimeter=0;" target="cls-labres-attr" value="&lt;font style=&quot;font-size: 15px;&quot;&gt;1                 0..*&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-user-audit" edge="1" parent="1" source="cls-user" style="endArrow=none;html=1;strokeColor=#111111;strokeWidth=1.5;" target="cls-auditlog" value="&lt;font style=&quot;font-size: 15px;&quot;&gt;1&lt;br&gt;0..*&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-labres-alert" edge="1" parent="1" source="cls-labres" style="endArrow=open;html=1;strokeColor=#111111;strokeWidth=1.5;" target="cls-alert" value="0..1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-pat-alert" edge="1" parent="1" source="cls-pat" style="endArrow=none;html=1;strokeColor=#111111;strokeWidth=1.5;edgeStyle=orthogonalEdgeStyle;" target="cls-alert" value="&lt;font style=&quot;font-size: 15px;&quot;&gt;1&lt;br&gt;&lt;br&gt;0..*&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="810" y="630" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel-ai-audit" edge="1" parent="1" source="cls-ai" style="endArrow=open;dashed=1;html=1;strokeColor=#111111;strokeWidth=1.3;" target="cls-auditlog" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;creates&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-ai-alertsvc" edge="1" parent="1" source="cls-ai" style="endArrow=open;dashed=1;html=1;strokeColor=#111111;strokeWidth=1.3;startArrow=open;startFill=0;" target="cls-alertsvc" value="&lt;font style=&quot;font-size: 15px;&quot;&gt;uses&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-alertsvc-email" edge="1" parent="1" source="cls-alertsvc" style="endArrow=open;dashed=1;html=1;strokeColor=#111111;strokeWidth=1.3;" target="cls-emailsvc" value="&lt;font style=&quot;font-size: 15px;&quot;&gt;uses&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-email-audit" edge="1" parent="1" source="cls-emailsvc" style="endArrow=open;dashed=1;html=1;strokeColor=#111111;strokeWidth=1.3;" target="cls-auditsvc" value="&lt;font style=&quot;font-size: 15px;&quot;&gt;uses&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-audit-sched" edge="1" parent="1" source="cls-auditsvc" style="endArrow=open;dashed=1;html=1;strokeColor=#111111;strokeWidth=1.3;" target="cls-sched" value="&lt;font style=&quot;font-size: 15px;&quot;&gt;uses&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-ai-eval" edge="1" parent="1" source="cls-ai" style="endArrow=open;dashed=1;html=1;strokeColor=#111111;strokeWidth=1.3;edgeStyle=orthogonalEdgeStyle;" target="cls-evalres" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;returns&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="150" y="1247.5" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel-alertsvc-eval" edge="1" parent="1" source="cls-alertsvc" style="endArrow=open;dashed=1;html=1;strokeColor=#111111;strokeWidth=1.3;startArrow=open;startFill=0;" target="cls-evalres" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-email-path" edge="1" parent="1" source="cls-emailsvc" style="endArrow=classic;dashed=1;html=1;strokeColor=#111111;strokeWidth=1.3;edgeStyle=orthogonalEdgeStyle;entryX=0.524;entryY=0.957;entryDx=0;entryDy=0;endFill=0;entryPerimeter=0;" target="cls-path-meth" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;retrieves&lt;br&gt;recipient&lt;/font&gt;">
+          <mxGeometry relative="1" x="0.4077" as="geometry">
+            <Array as="points">
+              <mxPoint x="832.5" y="730" />
+              <mxPoint x="478.9" y="730" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel-alert-sched" edge="1" parent="1" source="cls-alert" style="endArrow=open;dashed=1;html=1;strokeColor=#111111;strokeWidth=1.3;edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" target="cls-sched" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-auditsvc-pbi" edge="1" parent="1" source="cls-auditsvc" style="endArrow=open;dashed=1;html=1;strokeColor=#111111;strokeWidth=1.3;edgeStyle=orthogonalEdgeStyle;" target="grp-pbi" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;uses&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1215" y="1245" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
