@@ -101,9 +101,6 @@ public class PatientsByPathologistServlet extends HttpServlet {
         /*
          * Only roles permitted to capture results may use this
          * patient-lookup endpoint.
-         *
-         * Adjust LAB_PERSONNEL below if your application uses a
-         * different role value, such as LABORATORY_PERSONNEL.
          */
         boolean isAdministrator
                 = "ADMIN".equals(role);
@@ -313,7 +310,7 @@ public class PatientsByPathologistServlet extends HttpServlet {
      *
      * {
      * "success": true, "count": 2, "patients": [ { "id": 1, "patientCode":
-     * "P001", "displayName": "P001 - Lebo Mokoena" } ] }
+     * "P001", "displayName": "P001 - Lebo Mokoena" } ] } 
      */
     private void writeSuccessResponse(
             HttpServletResponse response,

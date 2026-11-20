@@ -32,9 +32,10 @@ import jakarta.servlet.http.HttpSession;
  *
  * The servlet validates that:
  *
- * 1. The selected pathologist exists and is active. 2. The selected patient
- * exists. 3. The patient is assigned to the selected pathologist. 4. The test
- * and numerical values are valid.
+ * 1. The selected pathologist exists and is active. 
+ * 2. The selected patient exists. 
+ * 3. The patient is assigned to the selected pathologist. 
+ * 4. The test and numerical values are valid.
  *
  * @author USER
  */
@@ -337,11 +338,8 @@ public class ResultSubmitServlet extends HttpServlet {
         }
 
         /*
-         * Confirm that the patient belongs to the selected active
-         * pathologist.
-         *
-         * This check must be performed server-side even though the
-         * patient dropdown is filtered in the browser.
+         * Confirm that the patient belongs to the selected active pathologist.
+         * This check must be performed server-side even though the patient dropdown is filtered in the browser.
          */
         boolean validAssignment;
 

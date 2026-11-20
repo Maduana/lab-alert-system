@@ -1,21 +1,83 @@
-/* -------------------------
-   Base
-------------------------- */
-body.app-body {
-    background: #f3f5fb;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    color: #1f2937;
-    margin: 0;
-    padding: 0;
+/* =========================================================
+   BASE
+   ========================================================= */
+
+html {
+    width: 100%;
+    min-height: 100%;
 }
 
-/* -------------------------
-   Topbar / Brand Area
-------------------------- */
+body.app-body {
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    color: #1f2937;
+    background: #f3f5fb;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/*
+ * Shared content area.
+ *
+ * The main element in header.jspf should use:
+ *
+ * <main class="container-fluid app-page-container py-4">
+ */
+.app-page-container {
+    width: 100%;
+    max-width: 1800px;
+    margin: 0 auto;
+    padding-right: 32px;
+    padding-left: 32px;
+}
+
+/*
+ * Optional medium-width content area for reports and larger forms.
+ */
+.app-content-medium {
+    width: 100%;
+    max-width: 1500px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+/*
+ * Optional narrow content area for focused forms.
+ */
+.app-content-narrow {
+    width: 100%;
+    max-width: 900px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+
+/* =========================================================
+   TOPBAR / BRAND AREA
+   ========================================================= */
+
 .topbar {
-    background: linear-gradient(90deg, #2f2fc3 0%, #4a58e8 100%);
     min-height: 82px;
+    background: linear-gradient(
+        90deg,
+        #2f2fc3 0%,
+        #4a58e8 100%
+        );
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/*
+ * Keep the navigation content aligned with the application page.
+ */
+.topbar .container,
+.topbar .container-fluid {
+    width: 100%;
+    max-width: 1800px;
+    margin: 0 auto;
+    padding-right: 32px;
+    padding-left: 32px;
 }
 
 .brand-wrap {
@@ -25,33 +87,32 @@ body.app-body {
     text-decoration: none;
 }
 
-.brand-wrap:hover {
+.brand-wrap:hover,
+.brand-wrap:focus {
     text-decoration: none;
 }
 
 .brand-logo-shell {
     width: 92px;
     height: 62px;
-    background: #ffffff;
-    border-radius: 16px;
+    padding: 4px 6px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 4px 6px;
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
     flex-shrink: 0;
     overflow: hidden;
-
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
 }
 
 .brand-logo {
     width: 100%;
     height: 100%;
-    object-fit: contain;
     display: block;
+    object-fit: contain;
     transform: scale(1.75);
     transform-origin: center;
-
 }
 
 .brand-copy {
@@ -62,53 +123,63 @@ body.app-body {
 
 .brand-title {
     color: #ffffff;
-    font-weight: 700;
     font-size: 1.15rem;
+    font-weight: 700;
     letter-spacing: 0.2px;
 }
 
 .brand-subtitle {
+    margin-top: 4px;
     color: rgba(255, 255, 255, 0.84);
     font-size: 0.78rem;
-    margin-top: 4px;
 }
 
 .welcome-pill {
-    background: rgba(255, 255, 255, 0.14);
-    color: #ffffff;
     padding: 8px 12px;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.14);
     border-radius: 999px;
     font-size: 0.85rem;
     white-space: nowrap;
 }
 
 .logout-btn {
-    border-radius: 999px;
     padding: 6px 14px;
+    border-radius: 999px;
     font-weight: 600;
 }
 
-/* -------------------------
-   Cards
-------------------------- */
+
+/* =========================================================
+   CARDS
+   ========================================================= */
+
 .app-card {
-    border: none;
-    border-radius: 18px;
+    overflow: hidden;
     background: #ffffff;
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
 }
 
 .app-card .card-header {
+    padding: 14px 18px;
+    color: #1f2937;
     background: #ffffff;
     border-bottom: 1px solid #e6e8ef;
-    border-radius: 18px 18px 0 0 !important;
+    border-radius: 16px 16px 0 0 !important;
     font-weight: 700;
-    color: #1f2937;
 }
 
-/* -------------------------
-   Login Page
-------------------------- */
+.app-card .card-body {
+    padding: 18px;
+}
+
+
+/* =========================================================
+   LOGIN PAGE
+   ========================================================= */
+
 .login-wrapper {
     min-height: calc(100vh - 140px);
     display: flex;
@@ -123,72 +194,192 @@ body.app-body {
 }
 
 .login-logo {
-    display: block;
-    margin: 0 auto 1.25rem auto;
     width: 100%;
     max-width: 460px;
     height: auto;
+    margin: 0 auto 1.25rem;
+    display: block;
 }
 
 .login-title {
-    text-align: center;
-    font-weight: 800;
-    color: #2f2fc3;
     margin-bottom: 0.35rem;
+    color: #2f2fc3;
     font-size: 2rem;
+    font-weight: 800;
+    text-align: center;
 }
 
 .login-subtitle {
-    text-align: center;
-    color: #6b7280;
     margin-bottom: 1.6rem;
+    color: #6b7280;
     font-size: 0.95rem;
+    text-align: center;
 }
 
-/* -------------------------
-   Metrics
-------------------------- */
+
+/* =========================================================
+   PRIMARY METRIC CARDS
+   ========================================================= */
+
 .metric-card {
-    border-radius: 18px;
+    min-height: 132px;
+    padding: 1.25rem 1.35rem;
     color: #ffffff;
-    padding: 1.2rem 1.25rem;
-    min-height: 130px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
 }
 
 .metric-blue {
-    background: linear-gradient(135deg, #4b5ff5, #6d8cff);
+    background: linear-gradient(
+        135deg,
+        #4b5ff5,
+        #6d8cff
+        );
 }
 
 .metric-green {
-    background: linear-gradient(135deg, #2f8f00, #5cb61d);
+    background: linear-gradient(
+        135deg,
+        #2f8f00,
+        #5cb61d
+        );
 }
 
 .metric-red {
-    background: linear-gradient(135deg, #d3362d, #ef5a52);
+    background: linear-gradient(
+        135deg,
+        #d3362d,
+        #ef5a52
+        );
+}
+
+.metric-purple {
+    background: linear-gradient(
+        135deg,
+        #7c3aed,
+        #5b21b6
+        );
 }
 
 .metric-card h6 {
-    font-size: 0.86rem;
-    opacity: 0.95;
     margin-bottom: 0.45rem;
+    font-size: 0.86rem;
     font-weight: 600;
+    opacity: 0.95;
 }
 
 .metric-card h2 {
+    margin: 0;
     font-size: 2rem;
     font-weight: 800;
-    margin: 0;
 }
 
-/* -------------------------
-   Tables
-------------------------- */
+
+/* =========================================================
+   DASHBOARD LAYOUT
+   ========================================================= */
+
+/*
+ * Six secondary KPI cards use this class to maintain equal height.
+ */
+.dashboard-kpi-card {
+    min-height: 150px;
+}
+
+.dashboard-kpi-card .card-body {
+    height: 100%;
+    padding: 18px 16px;
+}
+
+/*
+ * Scale large values, such as Average Review Time, based on the
+ * available space.
+ */
+.dashboard-kpi-card .fs-2 {
+    font-size: clamp(
+        1.4rem,
+        1.7vw,
+        2rem
+        ) !important;
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+}
+
+/*
+ * Prevent labels from unexpectedly overflowing their KPI cards.
+ */
+.dashboard-kpi-card .fw-semibold {
+    line-height: 1.3;
+}
+
+/*
+ * Results table wrapper.
+ */
+.dashboard-results-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: thin;
+}
+
+.dashboard-results-table {
+    width: 100%;
+    min-width: 760px;
+    margin-bottom: 0;
+}
+
+.dashboard-results-table th,
+.dashboard-results-table td {
+    padding: 12px 10px;
+    vertical-align: middle;
+}
+
+.dashboard-results-table th {
+    white-space: nowrap;
+}
+
+/*
+ * Alert feed scroll area.
+ */
+.dashboard-alert-feed {
+    max-height: 900px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+.dashboard-alert-feed::-webkit-scrollbar {
+    width: 9px;
+}
+
+.dashboard-alert-feed::-webkit-scrollbar-track {
+    background: #eef1f6;
+    border-radius: 999px;
+}
+
+.dashboard-alert-feed::-webkit-scrollbar-thumb {
+    background: #b6bdca;
+    border-radius: 999px;
+}
+
+.dashboard-alert-feed::-webkit-scrollbar-thumb:hover {
+    background: #8f98a8;
+}
+
+
+/* =========================================================
+   GENERAL TABLES
+   ========================================================= */
+
+.table {
+    margin-bottom: 0;
+}
+
 .table thead th {
-    background: #f8fafc;
     color: #111827;
-    font-weight: 700;
+    background: #f8fafc;
     border-bottom: 1px solid #e5e7eb;
+    font-weight: 700;
+    white-space: nowrap;
 }
 
 .table td,
@@ -196,30 +387,259 @@ body.app-body {
     vertical-align: middle;
 }
 
-/* -------------------------
-   Alerts
-------------------------- */
+
+/* =========================================================
+   DASHBOARD ALERT CARDS
+   ========================================================= */
+
 .alert-card-item {
-    border-radius: 14px;
-    padding: 0.9rem;
     margin-bottom: 0.9rem;
-    border: 1px solid #ececec;
+    padding: 0.95rem;
     background: #fafafa;
+    border: 1px solid #ececec;
+    border-radius: 14px;
 }
 
 .alert-card-item.critical {
-    border-left: 5px solid #dc2626;
     background: #fff7f7;
+    border-left: 5px solid #dc2626;
 }
 
 .alert-card-item.warning {
-    border-left: 5px solid #f59e0b;
     background: #fffdf7;
+    border-left: 5px solid #f59e0b;
 }
 
-/* -------------------------
-   Buttons / Forms
-------------------------- */
+
+/* =========================================================
+   FULL ALERT REGISTER
+   ========================================================= */
+
+.alerts-page {
+    width: 100%;
+}
+
+/*
+ * This wrapper handles horizontal scrolling for the wide register.
+ */
+.alert-register-scroll {
+    width: 100%;
+    padding-bottom: 10px;
+    overflow-x: auto;
+    overflow-y: visible;
+    scrollbar-width: auto;
+}
+
+.alert-register-table {
+    width: 100%;
+    min-width: 1650px;
+    margin-bottom: 0;
+    table-layout: auto;
+}
+
+.alert-register-table th {
+    padding: 13px 11px;
+    font-size: 0.82rem;
+    white-space: nowrap;
+}
+
+.alert-register-table td {
+    padding: 13px 11px;
+    font-size: 0.82rem;
+    line-height: 1.4;
+    vertical-align: middle;
+}
+
+/*
+ * Alert reference.
+ */
+.alert-register-table .alert-id-cell {
+    min-width: 70px;
+    white-space: nowrap;
+}
+
+/*
+ * Created and review-due dates.
+ */
+.alert-register-table .date-cell {
+    min-width: 165px;
+    white-space: nowrap;
+}
+
+/*
+ * Patient code and patient name.
+ */
+.alert-register-table .patient-cell {
+    min-width: 145px;
+    white-space: normal;
+}
+
+/*
+ * Test name.
+ */
+.alert-register-table .test-cell {
+    min-width: 115px;
+    white-space: normal;
+}
+
+/*
+ * Result value.
+ */
+.alert-register-table .result-cell {
+    min-width: 90px;
+    white-space: nowrap;
+}
+
+/*
+ * Alert severity.
+ */
+.alert-register-table .severity-cell {
+    min-width: 100px;
+    white-space: nowrap;
+}
+
+/*
+ * Long clinical descriptions wrap within this column.
+ */
+.alert-register-table .alert-message-cell {
+    min-width: 240px;
+    max-width: 340px;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    line-height: 1.45;
+}
+
+/*
+ * Original email notification status.
+ */
+.alert-register-table .email-status-cell {
+    min-width: 125px;
+    white-space: nowrap;
+}
+
+/*
+ * Review status.
+ */
+.alert-register-table .status-cell {
+    min-width: 150px;
+    white-space: normal;
+}
+
+/*
+ * Reminder history.
+ */
+.alert-register-table .reminder-cell {
+    min-width: 135px;
+    white-space: normal;
+}
+
+/*
+ * Acknowledging user.
+ */
+.alert-register-table .acknowledged-by-cell {
+    min-width: 145px;
+    white-space: normal;
+}
+
+/*
+ * Acknowledgement timestamp.
+ */
+.alert-register-table .acknowledged-at-cell {
+    min-width: 165px;
+    white-space: nowrap;
+}
+
+/*
+ * Keep the Action column available during horizontal scrolling.
+ */
+.alert-register-table .action-cell,
+.alert-register-table .sticky-action {
+    min-width: 195px;
+    position: sticky;
+    right: 0;
+    z-index: 2;
+    background: #ffffff;
+    box-shadow: -7px 0 10px rgba(15, 23, 42, 0.08);
+}
+
+.alert-register-table thead .sticky-action {
+    z-index: 4;
+    background: #f8fafc;
+}
+
+/*
+ * Match the fixed Action cell to overdue rows.
+ */
+.alert-register-table tbody tr.table-danger .sticky-action,
+.alert-register-table tbody tr.table-danger .action-cell {
+    background: #f8d7da;
+}
+
+/*
+ * Match the fixed Action cell to warning rows.
+ */
+.alert-register-table tbody tr.table-warning .sticky-action,
+.alert-register-table tbody tr.table-warning .action-cell {
+    background: #fff3cd;
+}
+
+/*
+ * Ensure Bootstrap striped rows do not create transparent sticky
+ * cells when the table scrolls.
+ */
+.alert-register-table.table-striped
+tbody tr:nth-of-type(odd):not(.table-danger):not(.table-warning)
+.sticky-action {
+    background: #f7f7f7;
+}
+
+.alert-register-table.table-striped
+tbody tr:nth-of-type(even):not(.table-danger):not(.table-warning)
+.sticky-action {
+    background: #ffffff;
+}
+
+/*
+ * Alert register scrollbar.
+ */
+.alert-register-scroll::-webkit-scrollbar {
+    height: 13px;
+}
+
+.alert-register-scroll::-webkit-scrollbar-track {
+    background: #e7eaf0;
+    border-radius: 999px;
+}
+
+.alert-register-scroll::-webkit-scrollbar-thumb {
+    background: #8d96a6;
+    border: 3px solid #e7eaf0;
+    border-radius: 999px;
+}
+
+.alert-register-scroll::-webkit-scrollbar-thumb:hover {
+    background: #636d7d;
+}
+
+
+/* =========================================================
+   BADGES
+   ========================================================= */
+
+.badge {
+    line-height: 1.15;
+    letter-spacing: 0.01em;
+}
+
+.alert-register-table .badge {
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   BUTTONS / FORMS
+   ========================================================= */
+
 .btn-primary {
     background: #4a58e8;
     border-color: #4a58e8;
@@ -227,81 +647,38 @@ body.app-body {
     font-weight: 600;
 }
 
-.btn-primary:hover {
+.btn-primary:hover,
+.btn-primary:focus {
     background: #2f2fc3;
     border-color: #2f2fc3;
 }
 
 .form-label {
-    font-weight: 600;
     color: #374151;
+    font-weight: 600;
 }
 
 .form-control,
 .form-select {
-    border-radius: 10px;
     min-height: 44px;
+    border-radius: 10px;
 }
 
-/* -------------------------
-   Links
-------------------------- */
-a {
+
+/* =========================================================
+   LINKS
+   ========================================================= */
+
+a,
+a:hover,
+a:focus {
     text-decoration: none;
 }
 
-a:hover {
-    text-decoration: none;
-}
-
-/* -------------------------
-   Responsive
-------------------------- */
-@media (max-width: 768px) {
-    .topbar {
-        min-height: auto;
-        padding-top: 10px;
-        padding-bottom: 10px;
-    }
-
-    .brand-wrap {
-        gap: 10px;
-    }
-
-    .brand-logo-shell {
-        width: 70px;
-        height: 50px;
-    }
-
-    .brand-logo {
-        max-height: 36px;
-    }
-
-    .brand-title {
-        font-size: 1rem;
-    }
-
-    .brand-subtitle {
-        display: none;
-    }
-
-    .welcome-pill {
-        display: none;
-    }
-
-    .login-logo {
-        width: 80%;
-        max-width: 240px;
-    }
-
-    .login-title {
-        font-size: 1.7rem;
-    }
-}
 
 /* =========================================================
    ACCESS DENIED PAGE
-========================================================= */
+   ========================================================= */
 
 .access-denied-wrapper {
     min-height: calc(100vh - 190px);
@@ -330,7 +707,11 @@ a:hover {
     align-items: center;
     justify-content: center;
     color: #ffffff;
-    background: linear-gradient(135deg, #5b35f5, #7c3aed);
+    background: linear-gradient(
+        135deg,
+        #5b35f5,
+        #7c3aed
+        );
     border-radius: 50%;
     box-shadow: 0 10px 24px rgba(91, 53, 245, 0.25);
     font-size: 2.15rem;
@@ -398,7 +779,11 @@ a:hover {
 
 .access-denied-primary-btn {
     color: #ffffff !important;
-    background: linear-gradient(135deg, #5b35f5, #7c3aed) !important;
+    background: linear-gradient(
+        135deg,
+        #5b35f5,
+        #7c3aed
+        ) !important;
     border: 1px solid transparent !important;
     box-shadow: 0 7px 18px rgba(91, 53, 245, 0.22);
 }
@@ -406,7 +791,11 @@ a:hover {
 .access-denied-primary-btn:hover,
 .access-denied-primary-btn:focus {
     color: #ffffff !important;
-    background: linear-gradient(135deg, #4821cf, #6d28d9) !important;
+    background: linear-gradient(
+        135deg,
+        #4821cf,
+        #6d28d9
+        ) !important;
     transform: translateY(-1px);
 }
 
@@ -430,7 +819,154 @@ a:hover {
     font-size: 0.9rem;
 }
 
-@media (max-width: 576px) {
+
+/* =========================================================
+   LARGE DESKTOPS
+   ========================================================= */
+
+@media (min-width: 1800px) {
+
+    .app-page-container,
+    .topbar .container,
+    .topbar .container-fluid {
+        max-width: 1860px;
+    }
+
+    .metric-card {
+        min-height: 138px;
+    }
+
+    .dashboard-kpi-card {
+        min-height: 154px;
+    }
+
+    .alert-register-table {
+        min-width: 1700px;
+    }
+}
+
+
+/* =========================================================
+   LAPTOPS AND MEDIUM DESKTOPS
+   ========================================================= */
+
+@media (max-width: 1399.98px) {
+
+    .app-page-container {
+        max-width: 100%;
+        padding-right: 24px;
+        padding-left: 24px;
+    }
+
+    .topbar .container,
+    .topbar .container-fluid {
+        max-width: 100%;
+        padding-right: 24px;
+        padding-left: 24px;
+    }
+
+    .metric-card {
+        min-height: 126px;
+    }
+
+    .dashboard-kpi-card {
+        min-height: 145px;
+    }
+
+    .alert-register-table {
+        min-width: 1580px;
+    }
+}
+
+
+/* =========================================================
+   TABLETS
+   ========================================================= */
+
+@media (max-width: 991.98px) {
+
+    .app-page-container {
+        padding-right: 18px;
+        padding-left: 18px;
+    }
+
+    .topbar .container,
+    .topbar .container-fluid {
+        padding-right: 18px;
+        padding-left: 18px;
+    }
+
+    .dashboard-alert-feed {
+        max-height: none;
+        overflow-y: visible;
+    }
+
+    .dashboard-kpi-card {
+        min-height: 135px;
+    }
+
+    .alert-register-table {
+        min-width: 1500px;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 767.98px) {
+
+    .topbar {
+        min-height: auto;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    .brand-wrap {
+        gap: 10px;
+    }
+
+    .brand-logo-shell {
+        width: 70px;
+        height: 50px;
+    }
+
+    .brand-logo {
+        max-height: 36px;
+    }
+
+    .brand-title {
+        font-size: 1rem;
+    }
+
+    .brand-subtitle,
+    .welcome-pill {
+        display: none;
+    }
+
+    .login-logo {
+        width: 80%;
+        max-width: 240px;
+    }
+
+    .login-title {
+        font-size: 1.7rem;
+    }
+
+    .metric-card {
+        min-height: 120px;
+        padding: 1rem;
+    }
+
+    .metric-card h2 {
+        font-size: 1.7rem;
+    }
+
+    .dashboard-kpi-card {
+        min-height: 125px;
+    }
+
     .access-denied-wrapper {
         padding: 1.5rem 0;
     }
@@ -458,5 +994,299 @@ a:hover {
     .access-denied-primary-btn,
     .access-denied-secondary-btn {
         width: 100%;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 575.98px) {
+
+    .app-page-container {
+        padding-right: 12px;
+        padding-left: 12px;
+    }
+
+    .topbar .container,
+    .topbar .container-fluid {
+        padding-right: 12px;
+        padding-left: 12px;
+    }
+
+    .app-card {
+        border-radius: 14px;
+    }
+
+    .app-card .card-header {
+        padding: 12px 14px;
+        border-radius: 14px 14px 0 0 !important;
+    }
+
+    .app-card .card-body {
+        padding: 14px;
+    }
+
+    .metric-card {
+        border-radius: 14px;
+    }
+
+    .dashboard-results-table {
+        min-width: 700px;
+    }
+
+    .alert-register-table {
+        min-width: 1450px;
+    }
+}
+
+/* =========================================================
+   COMPACT ALERT REGISTER
+   ========================================================= */
+
+.alerts-page {
+    width: 100%;
+}
+
+/* Horizontally scroll only when the compact table still exceeds
+   the available page width. */
+.alert-register-scroll {
+    width: 100%;
+    padding-bottom: 8px;
+    overflow-x: auto;
+    overflow-y: visible;
+    scrollbar-width: thin;
+}
+
+.alert-register-table {
+    width: 100%;
+    min-width: 1420px;
+    margin-bottom: 0;
+    table-layout: auto;
+}
+
+/* Compact header row. */
+.alert-register-table thead th {
+    padding: 9px 8px;
+    font-size: 0.75rem;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+/* Compact data rows. */
+.alert-register-table tbody td {
+    padding: 8px;
+    font-size: 0.76rem;
+    line-height: 1.3;
+    vertical-align: middle;
+}
+
+/* Reduce row hover movement and preserve status colouring. */
+.alert-register-table tbody tr {
+    transition: background-color 0.15s ease;
+}
+
+/* Alert reference. */
+.alert-register-table .alert-id-cell {
+    width: 58px;
+    min-width: 58px;
+    white-space: nowrap;
+}
+
+/* Created and review-due timestamps. */
+.alert-register-table .date-cell {
+    width: 138px;
+    min-width: 138px;
+    white-space: nowrap;
+    font-size: 0.72rem;
+}
+
+/* Patient code and name. */
+.alert-register-table .patient-cell {
+    width: 120px;
+    min-width: 120px;
+    white-space: normal;
+}
+
+.alert-register-table .patient-cell small {
+    font-size: 0.68rem;
+}
+
+/* Laboratory test. */
+.alert-register-table .test-cell {
+    width: 90px;
+    min-width: 90px;
+    white-space: normal;
+}
+
+/* Result value. */
+.alert-register-table .result-cell {
+    width: 72px;
+    min-width: 72px;
+    white-space: nowrap;
+}
+
+/* Severity. */
+.alert-register-table .severity-cell {
+    width: 82px;
+    min-width: 82px;
+    white-space: nowrap;
+}
+
+/* Clinical message wraps instead of widening the table. */
+.alert-register-table .alert-message-cell {
+    width: 205px;
+    min-width: 190px;
+    max-width: 230px;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    line-height: 1.35;
+}
+
+/* Original email status. */
+.alert-register-table .email-status-cell {
+    width: 105px;
+    min-width: 105px;
+    white-space: nowrap;
+}
+
+/* Review state. */
+.alert-register-table .status-cell {
+    width: 120px;
+    min-width: 120px;
+    white-space: normal;
+}
+
+/* Reminder history. */
+.alert-register-table .reminder-cell {
+    width: 100px;
+    min-width: 100px;
+    white-space: normal;
+}
+
+/* Acknowledgement information. */
+.alert-register-table .acknowledged-by-cell {
+    width: 120px;
+    min-width: 120px;
+    white-space: normal;
+}
+
+.alert-register-table .acknowledged-at-cell {
+    width: 138px;
+    min-width: 138px;
+    white-space: nowrap;
+    font-size: 0.72rem;
+}
+
+/* Compact badges inside the register only. */
+.alert-register-table .badge {
+    padding: 0.28rem 0.42rem;
+    font-size: 0.64rem;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+/* Compact buttons inside the register only. */
+.alert-register-table .btn-sm {
+    padding: 0.28rem 0.52rem;
+    font-size: 0.7rem;
+    line-height: 1.25;
+    border-radius: 6px;
+}
+
+/* Compact secondary text, such as "Escalated" and last reminder. */
+.alert-register-table small {
+    font-size: 0.67rem;
+    line-height: 1.25;
+}
+
+/* Sticky Action column. */
+.alert-register-table .action-cell,
+.alert-register-table .sticky-action {
+    width: 155px;
+    min-width: 155px;
+    position: sticky;
+    right: 0;
+    z-index: 2;
+    background: #ffffff;
+    box-shadow: -5px 0 8px rgba(15, 23, 42, 0.07);
+}
+
+.alert-register-table thead .sticky-action {
+    z-index: 4;
+    background: #f8fafc;
+}
+
+/* Match sticky cells to status-row backgrounds. */
+.alert-register-table tbody tr.table-danger .action-cell,
+.alert-register-table tbody tr.table-danger .sticky-action {
+    background: #f8d7da;
+}
+
+.alert-register-table tbody tr.table-warning .action-cell,
+.alert-register-table tbody tr.table-warning .sticky-action {
+    background: #fff3cd;
+}
+
+/* Preserve striped backgrounds behind the sticky Action column. */
+.alert-register-table.table-striped
+tbody tr:nth-of-type(odd):not(.table-danger):not(.table-warning)
+.sticky-action {
+    background: #f7f7f7;
+}
+
+.alert-register-table.table-striped
+tbody tr:nth-of-type(even):not(.table-danger):not(.table-warning)
+.sticky-action {
+    background: #ffffff;
+}
+
+/* Slim horizontal scrollbar. */
+.alert-register-scroll::-webkit-scrollbar {
+    height: 9px;
+}
+
+.alert-register-scroll::-webkit-scrollbar-track {
+    background: #e7eaf0;
+    border-radius: 999px;
+}
+
+.alert-register-scroll::-webkit-scrollbar-thumb {
+    background: #8d96a6;
+    border: 2px solid #e7eaf0;
+    border-radius: 999px;
+}
+
+.alert-register-scroll::-webkit-scrollbar-thumb:hover {
+    background: #636d7d;
+}
+
+/* Slightly tighter register card. */
+.alerts-page .app-card .card-header {
+    padding: 10px 14px;
+}
+
+.alerts-page .app-card .card-body {
+    padding: 0;
+}
+
+/* Laptop adjustment. */
+@media (max-width: 1399.98px) {
+    .alert-register-table {
+        min-width: 1380px;
+    }
+}
+
+/* Tablet and mobile retain horizontal scrolling. */
+@media (max-width: 991.98px) {
+    .alert-register-table {
+        min-width: 1340px;
+    }
+
+    .alert-register-table thead th,
+    .alert-register-table tbody td {
+        padding-right: 7px;
+        padding-left: 7px;
     }
 }

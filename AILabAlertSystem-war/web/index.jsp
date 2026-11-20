@@ -45,9 +45,6 @@
                 </button>
             </form>
 
-            <div class="mt-3 text-center text-muted small">
-                Demo login: <strong>admin</strong> / <strong>admin123</strong>
-            </div>
         </div>
     </div>
 </div>
