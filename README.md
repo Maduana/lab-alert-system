@@ -78,6 +78,13 @@ lab-alert-system/
 │   ├── Installation Guide v1.pdf
 │   ├── ISJ107V_Assignment5_Final_213213180.pptx
 │   └── ISJ107V_Power_BI_Dasboard_Final_213213180.pptx
+├── Image/
+│   ├── lab_alert_activity_diagram.png
+│   ├── lab_alert_class_model.png
+│   ├── lab_alert_component_architecture.png
+│   ├── lab_alert_deployment_diagram.png
+│   ├── lab_alert_sequence_diagram.png
+│   └── lab_alert_use_case_diagram.png
 ├── PowerBI/
 │   └── AILabAlertSystem Dashboard.pbix
 ├── UML/
