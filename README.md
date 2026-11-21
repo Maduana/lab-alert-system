@@ -27,7 +27,7 @@ The **AI Engine** evaluates incoming laboratory test results and automatically i
 - Normal range comparison
 - Severity classification
 - Risk scoring & critical value detection
-- Alert prioritisation & decision support recommendations
+- Alert prioritization & decision support recommendations
 
 ### Risk Score Classification
 
@@ -42,15 +42,18 @@ The **AI Engine** evaluates incoming laboratory test results and automatically i
 
 ## Database Design
 
-The system uses a relational **MySQL** database with the following core tables:
+The system uses a relational **MySQL** database (`lab_alert_db`) with core tables and analytical views:
 
 - `patients` — Stores patient information.
 - `test_results` — Stores laboratory test results.
 - `alerts` — Stores generated alerts.
+- `test_rules` — Stores clinical threshold and flagging rules.
 - `pathologists` — Stores pathologist accounts.
 - `users` — Stores system users.
+- `powerbi_user_access` — Manages Power BI access mappings.
 - `email_logs` — Stores email notification history.
 - `audit_logs` — Stores audit trail records.
+- `vw_powerbi_*` — Analytical views supporting Power BI reporting.
 
 ---
 
@@ -62,27 +65,29 @@ The system uses a relational **MySQL** database with the following core tables:
 - **Page 4 – Audit Activity:** User Activity Monitoring, Compliance Reporting, Security Tracking
 
 ---
+
 ## System Architecture & UML Diagrams
 
 ### 1. Use Case Diagram
-![Use Case Diagram](Image/lab_alert_use_case_diagram.png)
+![Use Case Diagram](Image/lab_alert_use_case_diagram.png)[cite: 14]
 
 ### 2. Class Model
-![Class Model](Image/lab_alert_class_model.png)
+![Class Model](Image/lab_alert_class_model.png)[cite: 14]
 
 ### 3. Sequence Diagram
-![Sequence Diagram](Image/lab_alert_sequence_diagram.png)
+![Sequence Diagram](Image/lab_alert_sequence_diagram.png)[cite: 14]
 
 ### 4. Activity Diagram
-![Activity Diagram](Image/lab_alert_activity_diagram.png)
+![Activity Diagram](Image/lab_alert_activity_diagram.png)[cite: 14]
 
-### 5.1. Component Architecture
-![Component Architecture](Image/lab_alert_component_architecture.png)
+### 5. Component Architecture
+![Component Architecture](Image/lab_alert_component_architecture.png)[cite: 14]
 
-### 5.2. Deployment Diagram
-![Deployment Diagram](Image/lab_alert_deployment_diagram.png)
+### 6. Deployment Diagram
+![Deployment Diagram](Image/lab_alert_deployment_diagram.png)[cite: 14]
 
 ---
+
 ## Project Structure
 
 ```text
@@ -120,7 +125,6 @@ lab-alert-system/
 ├── build.xml
 ├── README.md
 └── reporting-libs-pom.xml
-```
 
 ---
 
