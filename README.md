@@ -125,7 +125,7 @@ lab-alert-system/
 ├── build.xml
 ├── README.md
 └── reporting-libs-pom.xml
-
+```
 ---
 
 ## Installation Requirements
