@@ -62,7 +62,27 @@ The system uses a relational **MySQL** database with the following core tables:
 - **Page 4 – Audit Activity:** User Activity Monitoring, Compliance Reporting, Security Tracking
 
 ---
+## System Architecture & UML Diagrams
 
+### 1. Component Architecture
+![Component Architecture](Image/lab_alert_component_architecture.png)
+
+### 2. Deployment Diagram
+![Deployment Diagram](Image/lab_alert_deployment_diagram.png)
+
+### 3. Use Case Diagram
+![Use Case Diagram](Image/lab_alert_use_case_diagram.png)
+
+### 4. Class Model
+![Class Model](Image/lab_alert_class_model.png)
+
+### 5. Sequence Diagram
+![Sequence Diagram](Image/lab_alert_sequence_diagram.png)
+
+### 6. Activity Diagram
+![Activity Diagram](Image/lab_alert_activity_diagram.png)
+
+---
 ## Project Structure
 
 ```text
